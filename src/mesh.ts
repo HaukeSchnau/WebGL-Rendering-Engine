@@ -1,5 +1,4 @@
 import { gl } from "./glUtil";
-import Shader from "./shader";
 import { removeEmptyStrings } from "./util";
 import Vector3 from "./vector3";
 import { Vertex } from "./vertex";

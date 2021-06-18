@@ -2,7 +2,6 @@ import "./style.css";
 import { getTime } from "./util";
 import Mesh from "./mesh";
 import { clearScreen, getVersion, gl, initGraphics, setGl } from "./glUtil";
-import { Vertex } from "./vertex";
 import Vector3 from "./vector3";
 import Shader from "./shader";
 import Transform from "./transform";
@@ -68,13 +67,14 @@ async function init() {
   transform = new Transform();
   camera = new Camera();
   Transform.camera = camera;
+  requestAnimationFrame(loop);
 }
 
-let time = 0;
+// let time = 0;
 let yVelocity = 0;
 
 function update(deltaTime: number) {
-  const sinTemp = Math.sin(time);
+  // const sinTemp = Math.sin(time);
   // transform.translation.x = Math.sin(time);
   // transform.translation.y = Math.cos(time);
   // transform.translation.z = 2;
@@ -108,7 +108,7 @@ function update(deltaTime: number) {
 
   camera.move(Camera.yAxis, yVelocity * deltaTime);
 
-  time += deltaTime;
+  // time += deltaTime;
 }
 
 function render() {
@@ -139,8 +139,7 @@ window.onresize = () => {
 document.addEventListener("keydown", onKeyDown);
 document.addEventListener("keyup", onKeyUp);
 
-await init();
-requestAnimationFrame(loop);
+init();
 
 function updatePosition(e: MouseEvent) {
   const movement = new Vector2(e.movementX, e.movementY);

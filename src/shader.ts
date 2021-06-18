@@ -71,7 +71,7 @@ export default class Shader {
     gl.useProgram(this.program);
   }
 
-  static async loadSource(type: number, filename: string) {
+  static async loadSource(filename: string) {
     return await fetch(`/glsl/` + filename).then((res) => res.text());
   }
 
@@ -97,8 +97,8 @@ export default class Shader {
     attribNames: string[] = [],
     uniformNames: string[] = []
   ) {
-    const vertex = await Shader.loadSource(gl.VERTEX_SHADER, name + ".vs");
-    const fragment = await Shader.loadSource(gl.FRAGMENT_SHADER, name + ".fs");
+    const vertex = await Shader.loadSource(name + ".vs");
+    const fragment = await Shader.loadSource(name + ".fs");
 
     return new Shader(vertex, fragment, attribNames, uniformNames);
   }
