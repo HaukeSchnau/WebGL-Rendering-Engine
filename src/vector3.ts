@@ -1,3 +1,6 @@
+import mathUtils from "./mathUtils";
+import Quaternion from "./quaternion";
+
 export default class Vector3 {
   x: number;
   y: number;
@@ -43,6 +46,23 @@ export default class Vector3 {
       this.z * r.x - this.x * r.z,
       this.x * r.y - this.y * r.x
     );
+  }
+
+  rotate(angle: number, axis: Vector3) {
+    const sinHalfAngle = Math.sin(mathUtils.toRadians(angle / 2));
+    const cosHalfAngle = Math.cos(mathUtils.toRadians(angle / 2));
+
+    const rX = axis.x * sinHalfAngle;
+    const rY = axis.y * sinHalfAngle;
+    const rZ = axis.z * sinHalfAngle;
+    const rW = cosHalfAngle;
+
+    const rotation = new Quaternion(rX, rY, rZ, rW);
+    const conjugate = rotation.conjugate;
+
+    const w = rotation.mulVec(this).mul(conjugate);
+
+    return new Vector3(w.x, w.y, w.z);
   }
 
   get length() {
