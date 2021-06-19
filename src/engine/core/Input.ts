@@ -11,3 +11,7 @@ export function onKeyDown(e: KeyboardEvent) {
 export function onKeyUp(e: KeyboardEvent) {
   downKeys.delete(e.code);
 }
+
+export default {
+  isKeyDown, onKeyDown, onKeyUp
+}

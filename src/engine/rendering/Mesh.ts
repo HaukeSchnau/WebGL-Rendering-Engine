@@ -1,14 +1,18 @@
-import { gl } from "./glUtil";
-import { removeEmptyStrings } from "./util";
-import Vector3 from "./vector3";
-import { Vertex } from "./vertex";
+import AssetManager from "../core/AssetManager";
+import { removeEmptyStrings } from "../core/Util";
+import Vector3 from "../math/Vector3";
+import { gl } from "./GraphicsUtil";
+import { Vertex } from "./Vertex";
 
 export default class Mesh {
   private vbo: WebGLBuffer;
   private ibo: WebGLBuffer;
   private size: number;
 
-  constructor(vertices: Vertex[], indices: number[]) {
+  constructor(name: string) {
+    const vertices = AssetManager.getMesh(name).vertices;
+    const indices = AssetManager.getMesh(name).indices;
+
     this.vbo = gl.createBuffer()!;
     this.ibo = gl.createBuffer()!;
 
@@ -38,41 +42,6 @@ export default class Mesh {
     gl.drawElements(gl.TRIANGLES, this.size, gl.UNSIGNED_SHORT, 0);
 
     gl.disableVertexAttribArray(0);
-  }
-
-  static async loadMesh(fileName: string) {
-    const vertices: Vertex[] = [];
-    const indices: number[] = [];
-
-    const raw = await fetch("/obj/" + fileName).then((res) => res.text());
-    const lines = raw.split("\n");
-
-    for (let line of lines) {
-      let tokens = line.split(" ");
-      tokens = removeEmptyStrings(tokens);
-
-      if (tokens.length == 0 || tokens[0] === "#") {
-        continue;
-      } else if (tokens[0] === "v") {
-        vertices.push(
-          new Vertex(
-            new Vector3(
-              parseFloat(tokens[1]),
-              parseFloat(tokens[2]),
-              parseFloat(tokens[3])
-            )
-          )
-        );
-      } else if (tokens[0] === "f") {
-        indices.push(
-          parseInt(tokens[1]) - 1,
-          parseInt(tokens[2]) - 1,
-          parseInt(tokens[3]) - 1
-        );
-      }
-    }
-
-    return new Mesh(vertices, indices);
   }
 }
 

@@ -1,4 +1,4 @@
-import Vector3 from "./vector3";
+import Vector3 from "../math/Vector3";
 
 export default class Camera {
   public static readonly yAxis = new Vector3(0, 1, 0);

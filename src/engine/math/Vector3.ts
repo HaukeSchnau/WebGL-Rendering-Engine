@@ -1,5 +1,5 @@
-import mathUtils from "./mathUtils";
-import Quaternion from "./quaternion";
+import mathUtils from "./MathUtils";
+import Quaternion from "./Quaternion";
 
 export default class Vector3 {
   x: number;

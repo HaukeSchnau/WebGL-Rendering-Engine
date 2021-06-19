@@ -1,4 +1,4 @@
-import Vector3 from "./vector3";
+import Vector3 from "./Vector3";
 
 export class Vertex {
   public static readonly SIZE = 3;

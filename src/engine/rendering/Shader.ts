@@ -1,6 +1,7 @@
-import { gl } from "./glUtil";
-import Matrix4 from "./matrix4";
-import Vector3 from "./vector3";
+import AssetManager from "../core/AssetManager";
+import Matrix4 from "../math/Matrix4";
+import Vector3 from "../math/Vector3";
+import { gl } from "./GraphicsUtil";
 
 interface AttribLocations {
   [key: string]: number;
@@ -18,13 +19,12 @@ export default class Shader {
   private uniformLocations: UniformLocations = {};
 
   constructor(
-    vertexSource: string,
-    fragmentSource: string,
+    name: string,
     attribNames: string[] = [],
     uniformNames: string[] = []
   ) {
-    this.vertex = Shader.compileShader(gl.VERTEX_SHADER, vertexSource);
-    this.fragment = Shader.compileShader(gl.FRAGMENT_SHADER, fragmentSource);
+    this.vertex = Shader.compileShader(gl.VERTEX_SHADER, AssetManager.getVertexShader(name));
+    this.fragment = Shader.compileShader(gl.FRAGMENT_SHADER, AssetManager.getFragmentShader(name));
 
     this.program = gl.createProgram()!;
     gl.attachShader(this.program, this.vertex);
@@ -71,10 +71,6 @@ export default class Shader {
     gl.useProgram(this.program);
   }
 
-  static async loadSource(filename: string) {
-    return await fetch(`/glsl/` + filename).then((res) => res.text());
-  }
-
   static compileShader(type: number, source: string): WebGLShader {
     const shader = gl.createShader(type)!;
 
@@ -90,17 +86,6 @@ export default class Shader {
     }
 
     return shader;
-  }
-
-  static async fromName(
-    name: string,
-    attribNames: string[] = [],
-    uniformNames: string[] = []
-  ) {
-    const vertex = await Shader.loadSource(name + ".vs");
-    const fragment = await Shader.loadSource(name + ".fs");
-
-    return new Shader(vertex, fragment, attribNames, uniformNames);
   }
 }
 

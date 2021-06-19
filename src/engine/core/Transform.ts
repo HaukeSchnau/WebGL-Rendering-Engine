@@ -1,6 +1,6 @@
-import Camera from "./camera";
-import Matrix4 from "./matrix4";
-import Vector3 from "./vector3";
+import Matrix4 from "../math/Matrix4";
+import Vector3 from "../math/Vector3";
+import Camera from "./Camera";
 
 export default class Transform {
   private static zNear: number;

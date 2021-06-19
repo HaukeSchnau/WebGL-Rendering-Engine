@@ -1,5 +1,5 @@
-import Vector3 from "./vector3";
-import MathUtils from "./mathUtils";
+import Vector3 from "./Vector3";
+import MathUtils from "./MathUtils";
 
 export default class Matrix4 {
   private m: number[][];

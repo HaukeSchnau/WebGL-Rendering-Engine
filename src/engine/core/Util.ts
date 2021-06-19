@@ -1,5 +1,11 @@
+export const SECOND = 1e3;
+
 export function getTime(): number {
   return new Date().getTime();
+}
+
+export function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 export function removeEmptyStrings(data: string[]) {
