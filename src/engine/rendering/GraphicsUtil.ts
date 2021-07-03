@@ -20,3 +20,7 @@ export function initGraphics() {
 export function getVersion() {
   return gl.getParameter(gl.VERSION);
 }
+
+export function unbindTextures() {
+  gl.bindTexture(gl.TEXTURE_2D, 0);
+}

@@ -2,6 +2,7 @@ import AssetManager from "../core/AssetManager";
 import Matrix4 from "../math/Matrix4";
 import Vector3 from "../math/Vector3";
 import { gl } from "./GraphicsUtil";
+import Material from "./Material";
 
 interface AttribLocations {
   [key: string]: number;
@@ -23,8 +24,14 @@ export default class Shader {
     attribNames: string[] = [],
     uniformNames: string[] = []
   ) {
-    this.vertex = Shader.compileShader(gl.VERTEX_SHADER, AssetManager.getVertexShader(name));
-    this.fragment = Shader.compileShader(gl.FRAGMENT_SHADER, AssetManager.getFragmentShader(name));
+    this.vertex = Shader.compileShader(
+      gl.VERTEX_SHADER,
+      AssetManager.getVertexShader(name)
+    );
+    this.fragment = Shader.compileShader(
+      gl.FRAGMENT_SHADER,
+      AssetManager.getFragmentShader(name)
+    );
 
     this.program = gl.createProgram()!;
     gl.attachShader(this.program, this.vertex);
@@ -47,6 +54,10 @@ export default class Shader {
     }
   }
 
+  addUniform(name: string) {
+    this.uniformLocations[name] = gl.getUniformLocation(this.program, name)!;
+  }
+
   setUniformi(name: string, value: number) {
     gl.uniform1i(this.uniformLocations[name], value);
   }
@@ -66,6 +77,20 @@ export default class Shader {
         createMatBuffer(value)
       );
   }
+
+  getAttribLocation(name: string) {
+    return this.attribLocations[name];
+  }
+
+  enableAttrib(name: string) {
+    gl.enableVertexAttribArray(this.getAttribLocation(name));
+  }
+
+  disableAttrib(name: string) {
+    gl.disableVertexAttribArray(this.getAttribLocation(name));
+  }
+
+  updateUniforms(_worldMatrix: Matrix4, _projectedMatrix: Matrix4, _material: Material) {}
 
   bind() {
     gl.useProgram(this.program);

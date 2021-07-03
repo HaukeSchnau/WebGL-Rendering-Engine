@@ -1,3 +1,4 @@
+import Vector2 from "../math/Vector2";
 import Vector3 from "../math/Vector3";
 import { Vertex } from "../rendering/Vertex";
 import { removeEmptyStrings } from "./Util";
@@ -62,7 +63,10 @@ export async function loadMesh(name: string) {
             parseFloat(tokens[1]),
             parseFloat(tokens[2]),
             parseFloat(tokens[3])
-          )
+          ),
+          new Vector2(
+            0,0
+          ) // TODO
         )
       );
     } else if (tokens[0] === "f") {
@@ -74,10 +78,7 @@ export async function loadMesh(name: string) {
     }
   }
 
-  loadedAssets.meshes[name] = {
-    vertices,
-    indices,
-  };
+  addMesh(name, vertices, indices)
 }
 
 export function getVertexShader(name: string) {
@@ -92,10 +93,18 @@ export function getMesh(name: string) {
   return loadedAssets.meshes[name];
 }
 
+export function addMesh(name: string, vertices: Vertex[], indices: number[]) {
+  loadedAssets.meshes[name] = {
+    vertices,
+    indices,
+  };
+}
+
 export default {
   getVertexShader,
   getFragmentShader,
   loadShader,
   loadMesh,
   getMesh,
+  addMesh,
 };

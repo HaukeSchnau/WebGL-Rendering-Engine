@@ -74,4 +74,20 @@ export default class Vector3 {
 
     return new Vector3(this.x / length, this.y / length, this.z / length);
   }
+
+  get xy() {
+    return this.mul(new Vector3(1, 1, 0));
+  }
+
+  get xz() {
+    return this.mul(new Vector3(1, 0, 1));
+  }
+
+  get yz() {
+    return this.mul(new Vector3(0, 1, 1));
+  }
+
+  get abs() {
+    return new Vector3(Math.abs(this.x), Math.abs(this.y), Math.abs(this.z));
+  }
 }

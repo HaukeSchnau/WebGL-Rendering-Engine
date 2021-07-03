@@ -48,4 +48,8 @@ export default class Vector2 {
 
     return new Vector2(this.x / length, this.y / length);
   }
+
+  get abs() {
+    return new Vector2(Math.abs(this.x), Math.abs(this.y));
+  }
 }

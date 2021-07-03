@@ -5,8 +5,7 @@ import Transform from "./Transform";
 import { getTime, SECOND, sleep } from "./Util";
 
 export default abstract class Game {
-  private static readonly FRAME_CAP = 5000;
-  private static readonly FRAME_TIME = 1.0 / Game.FRAME_CAP;
+  private static readonly MS_PER_UPDATE = 16;
 
   private lastTime = getTime();
   private unprocessedTime = 0;
@@ -59,13 +58,13 @@ export default abstract class Game {
     const passedTime = startTime - this.lastTime;
     this.lastTime = startTime;
 
-    this.unprocessedTime += passedTime / SECOND;
+    this.unprocessedTime += passedTime;
     this.frameCounter += passedTime;
 
-    while (this.unprocessedTime > Game.FRAME_TIME) {
-      this.unprocessedTime -= Game.FRAME_TIME;
+    while (this.unprocessedTime >= Game.MS_PER_UPDATE) {
+      this.unprocessedTime -= Game.MS_PER_UPDATE;
 
-      this.update(Game.FRAME_TIME);
+      this.update(Game.MS_PER_UPDATE / SECOND);
 
       shouldRender = true;
 
@@ -75,7 +74,7 @@ export default abstract class Game {
         this.frameCounter = 0;
       }
     }
-    if (shouldRender) {
+    if (shouldRender || true) {
       this.render();
       this.frames++;
     } else {
