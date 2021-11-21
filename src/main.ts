@@ -8,6 +8,10 @@ import Vector2 from "./engine/math/Vector2";
 (async () => {
   await AssetManager.loadShader("basicShader");
   await AssetManager.loadShader("phongShader");
+  await AssetManager.loadShader("forward-ambient");
+  await AssetManager.loadShader("forward-directional");
+  await AssetManager.loadShader("forward-point");
+  await AssetManager.loadShader("forward-spot");
   await AssetManager.loadMesh("monkey");
   await AssetManager.loadMesh("sphere");
 
@@ -34,7 +38,10 @@ import Vector2 from "./engine/math/Vector2";
     new Vertex(new Vector3(-fieldWidth, -2, -fieldDepth), new Vector2(0, 0)),
     new Vertex(new Vector3(-fieldWidth, -2, fieldDepth * 3), new Vector2(0, 1)),
     new Vertex(new Vector3(fieldWidth * 3, -2, -fieldDepth), new Vector2(1, 0)),
-    new Vertex(new Vector3(fieldWidth * 3, -2, fieldDepth * 3), new Vector2(1, 1)),
+    new Vertex(
+      new Vector3(fieldWidth * 3, -2, fieldDepth * 3),
+      new Vector2(1, 1)
+    ),
   ];
 
   // prettier-ignore

@@ -16,12 +16,12 @@ export default class GameObject {
             child.input(mouseMovement);
     }
 
-    update() {
+    update(delta: number) {
         for (const component of this.components)
             component.update(this.transform);
 
         for (const child of this.children)
-            child.update();
+            child.update(delta);
     }
 
     render(shader: Shader) {

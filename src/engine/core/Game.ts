@@ -2,10 +2,10 @@ import Vector2 from "../math/Vector2";
 import RenderingEngine from "../rendering/RenderingEngine";
 import GameObject from "./GameObject";
 import { onKeyDown, onKeyUp } from "./Input";
-import { getTime, SECOND, sleep } from "./Util";
+import { getTime, sleep } from "./Util";
 
 export default abstract class Game {
-  private static readonly MS_PER_UPDATE = 16;
+  private static readonly SECONDS_PER_UPDATE = 16 / 1000;
 
   private lastTime = getTime();
   private unprocessedTime = 0;
@@ -25,7 +25,7 @@ export default abstract class Game {
       canvas.requestPointerLock();
     };
 
-    const context = this.canvas.getContext("webgl");
+    const context = this.canvas.getContext("webgl2");
     if (context === null) {
       throw Error("WebGL konnte nicht intialisiert werden.");
     }
@@ -62,14 +62,14 @@ export default abstract class Game {
     this.unprocessedTime += passedTime;
     this.frameCounter += passedTime;
 
-    while (this.unprocessedTime >= Game.MS_PER_UPDATE) {
-      this.unprocessedTime -= Game.MS_PER_UPDATE;
+    while (this.unprocessedTime >= Game.SECONDS_PER_UPDATE) {
+      this.unprocessedTime -= Game.SECONDS_PER_UPDATE;
 
-      this.update(Game.MS_PER_UPDATE / SECOND);
+      this.update(Game.SECONDS_PER_UPDATE);
 
       shouldRender = true;
 
-      if (this.frameCounter >= SECOND) {
+      if (this.frameCounter >= 1) {
         console.log(this.frames);
         this.frames = 0;
         this.frameCounter = 0;
@@ -94,8 +94,8 @@ export default abstract class Game {
     this.renderingEngine.resize(width, height);
   }
 
-  update(_deltaTime: number) {
-    this.root.update();
+  update(delta: number) {
+    this.root.update(delta);
   };
   onMouseMove(movement: Vector2) {
     this.root.input(movement);

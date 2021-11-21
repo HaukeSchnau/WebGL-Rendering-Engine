@@ -1,7 +1,7 @@
-export const SECOND = 1e3;
+const SECOND = 1e3;
 
 export function getTime(): number {
-  return new Date().getTime();
+  return new Date().getTime() / SECOND;
 }
 
 export function sleep(ms: number) {

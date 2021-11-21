@@ -17,7 +17,7 @@ export default class MyGame extends Game {
     );
 
     this.root.components.push(
-      new MeshRenderer(new Mesh("monkey", true), material)
+      new MeshRenderer(new Mesh("pyramid", true), material)
     )
 
     this.root.transform.translation.z = 5;

@@ -7,6 +7,10 @@ export default class Vector2 {
     this.y = y;
   }
 
+  lerp(dest: Vector2, lerpFactor: number): Vector2 {
+    return dest.sub(this).mul(lerpFactor).add(this);
+  }
+
   add(r: Vector2 | number): Vector2 {
     if (typeof r === "number")
       return new Vector2(this.x + r, this.y + r);

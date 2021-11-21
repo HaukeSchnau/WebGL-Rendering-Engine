@@ -12,6 +12,10 @@ export default class Vector3 {
     this.z = z;
   }
 
+  lerp(dest: Vector3, lerpFactor: number): Vector3 {
+    return dest.sub(this).mul(lerpFactor).add(this);
+  }
+
   add(r: Vector3 | number): Vector3 {
     if (typeof r === "number")
       return new Vector3(this.x + r, this.y + r, this.z + r);
