@@ -9,6 +9,7 @@ import Vector2 from "./engine/math/Vector2";
   await AssetManager.loadShader("basicShader");
   await AssetManager.loadShader("phongShader");
   await AssetManager.loadMesh("monkey");
+  await AssetManager.loadMesh("sphere");
 
   const vertices = [
     new Vertex(new Vector3(-1.0, -1.0, 0.5773), new Vector2(0, 0)),
@@ -19,10 +20,10 @@ import Vector2 from "./engine/math/Vector2";
 
   // prettier-ignore
   const indices = [
-    0,3,1,
-    1,3,2,
-    2,3,0,
-    1,2,0
+    0, 3, 1,
+    1, 3, 2,
+    2, 3, 0,
+    1, 2, 0
   ];
 
   AssetManager.addMesh("pyramid", vertices, indices);
@@ -38,8 +39,8 @@ import Vector2 from "./engine/math/Vector2";
 
   // prettier-ignore
   const indicesPlane = [
-    0,1,2,
-    2,1,3
+    0, 1, 2,
+    2, 1, 3
   ];
 
   AssetManager.addMesh("plane", verticesPlane, indicesPlane);

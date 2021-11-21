@@ -1,14 +1,13 @@
-import Transform from "../engine/core/Transform";
-import Matrix4 from "../engine/math/Matrix4";
-import Vector3 from "../engine/math/Vector3";
-import Attenuation from "../engine/rendering/Attenuation";
-import BaseLight from "../engine/rendering/BaseLight";
-import DirectionalLight from "../engine/rendering/DirectionalLight";
-import { unbindTextures } from "../engine/rendering/GraphicsUtil";
-import Material from "../engine/rendering/Material";
-import PointLight from "../engine/rendering/PointLight";
-import Shader from "../engine/rendering/Shader";
-import SpotLight from "../engine/rendering/SpotLight";
+import Transform from "../core/Transform";
+import Vector3 from "../math/Vector3";
+import Attenuation from "./Attenuation";
+import BaseLight from "./BaseLight";
+import DirectionalLight from "./DirectionalLight";
+import Material from "./Material";
+import PointLight from "./PointLight";
+import { currentRenderingEngine } from "./RenderingEngine";
+import Shader from "./Shader";
+import SpotLight from "./SpotLight";
 
 export default class PhongShader extends Shader {
   private static _instance: PhongShader;
@@ -44,7 +43,7 @@ export default class PhongShader extends Shader {
       ]
     );
 
-    for(let i = 0; i < PhongShader.MAX_POINT_LIGHTS; i++) {
+    for (let i = 0; i < PhongShader.MAX_POINT_LIGHTS; i++) {
       this.addUniform("pointLights[" + i + "].base.color")
       this.addUniform("pointLights[" + i + "].base.intensity")
       this.addUniform("pointLights[" + i + "].atten.constant")
@@ -54,7 +53,7 @@ export default class PhongShader extends Shader {
       this.addUniform("pointLights[" + i + "].range")
     }
 
-    for(let i = 0; i < PhongShader.MAX_SPOT_LIGHTS; i++) {
+    for (let i = 0; i < PhongShader.MAX_SPOT_LIGHTS; i++) {
       this.addUniform("spotLights[" + i + "].pointLight.base.color")
       this.addUniform("spotLights[" + i + "].pointLight.base.intensity")
       this.addUniform("spotLights[" + i + "].pointLight.atten.constant")
@@ -70,12 +69,14 @@ export default class PhongShader extends Shader {
   }
 
   updateUniforms(
-    worldMatrix: Matrix4,
-    projectedMatrix: Matrix4,
+    transform: Transform,
     material: Material
   ) {
+    const worldMatrix = transform.getTransformation();
+    const projectedMatrix = currentRenderingEngine.mainCamera.getViewProjection().mul(worldMatrix);
+
     if (material.texture) material.texture.bind();
-    else unbindTextures();
+    else currentRenderingEngine.unbindTextures();
 
     this.setUniform("transform", worldMatrix);
     this.setUniform("transformProjected", projectedMatrix);
@@ -83,17 +84,17 @@ export default class PhongShader extends Shader {
 
     this.setUniform("ambientLight", this.ambientLight);
     this.setUniformDirLight("directionalLight", this.directionalLight);
-    for(let i = 0; i < this.pointLights.length; i++) {
+    for (let i = 0; i < this.pointLights.length; i++) {
       this.setUniformPointLight("pointLights[" + i + "]", this.pointLights[i]);
     }
-    for(let i = 0; i < this.spotLights.length; i++) {
+    for (let i = 0; i < this.spotLights.length; i++) {
       this.setUniformSpotLight("spotLights[" + i + "]", this.spotLights[i]);
     }
 
     this.setUniformf("specularIntensity", material.specularIntensity);
     this.setUniformf("specularPower", material.specularPower);
 
-    this.setUniform("eyePos", Transform.camera.pos);
+    this.setUniform("eyePos", currentRenderingEngine.mainCamera.pos);
 
   }
 

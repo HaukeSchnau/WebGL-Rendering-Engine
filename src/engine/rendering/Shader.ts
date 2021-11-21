@@ -1,8 +1,9 @@
 import AssetManager from "../core/AssetManager";
+import Transform from "../core/Transform";
 import Matrix4 from "../math/Matrix4";
 import Vector3 from "../math/Vector3";
-import { gl } from "./GraphicsUtil";
 import Material from "./Material";
+import { gl } from "./RenderingEngine";
 
 interface AttribLocations {
   [key: string]: number;
@@ -41,7 +42,7 @@ export default class Shader {
     if (!gl.getProgramParameter(this.program, gl.LINK_STATUS)) {
       console.error(
         "Unable to initialize the shader program: " +
-          gl.getProgramInfoLog(this.program)
+        gl.getProgramInfoLog(this.program)
       );
     }
 
@@ -90,7 +91,7 @@ export default class Shader {
     gl.disableVertexAttribArray(this.getAttribLocation(name));
   }
 
-  updateUniforms(_worldMatrix: Matrix4, _projectedMatrix: Matrix4, _material: Material) {}
+  updateUniforms(_transform: Transform, _material: Material) { }
 
   bind() {
     gl.useProgram(this.program);
@@ -105,7 +106,7 @@ export default class Shader {
     if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
       console.error(
         "An error occurred compiling the shaders: " +
-          gl.getShaderInfoLog(shader)
+        gl.getShaderInfoLog(shader)
       );
       gl.deleteShader(shader);
     }

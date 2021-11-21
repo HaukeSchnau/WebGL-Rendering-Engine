@@ -1,7 +1,7 @@
 import Vector2 from "../math/Vector2";
-import { getVersion, gl, initGraphics, setGl } from "../rendering/GraphicsUtil";
+import RenderingEngine from "../rendering/RenderingEngine";
+import GameObject from "./GameObject";
 import { onKeyDown, onKeyUp } from "./Input";
-import Transform from "./Transform";
 import { getTime, SECOND, sleep } from "./Util";
 
 export default abstract class Game {
@@ -16,23 +16,24 @@ export default abstract class Game {
   private canvas: HTMLCanvasElement;
   private isRunning = false;
 
+  root: GameObject = new GameObject();
+  private renderingEngine: RenderingEngine;
+
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     this.canvas.onclick = () => {
       canvas.requestPointerLock();
     };
 
-    setGl(this.canvas.getContext("webgl")!);
-    console.log(getVersion());
-
-    this.onResize(window.innerWidth, window.innerHeight);
-
-    if (gl === null) {
-      alert("WebGL konnte nicht intialisiert werden.");
-      return;
+    const context = this.canvas.getContext("webgl");
+    if (context === null) {
+      throw Error("WebGL konnte nicht intialisiert werden.");
     }
 
-    initGraphics();
+    const { innerWidth: width, innerHeight: height } = window;
+    this.renderingEngine = new RenderingEngine(context, width, height);
+    this.onResize(width, height);
+
     document.addEventListener("pointerlockchange", this.lockChangeAlert, false);
 
     document.addEventListener("keydown", onKeyDown);
@@ -75,7 +76,7 @@ export default abstract class Game {
       }
     }
     if (shouldRender || true) {
-      this.render();
+      this.renderingEngine.render(this.root);
       this.frames++;
     } else {
       await sleep(1);
@@ -90,13 +91,15 @@ export default abstract class Game {
     this.canvas.width = width;
     this.canvas.height = height;
 
-    gl.viewport(0, 0, width, height);
-    Transform.setProjection(70, width, height, 0.1, 1000);
+    this.renderingEngine.resize(width, height);
   }
 
-  abstract update(deltaTime: number): void;
-  abstract render(): void;
-  abstract onMouseMove(movement: Vector2): void;
+  update(_deltaTime: number) {
+    this.root.update();
+  };
+  onMouseMove(movement: Vector2) {
+    this.root.input(movement);
+  };
 
   private mousemove = (e: MouseEvent) => {
     const movement = new Vector2(e.movementX, e.movementY);

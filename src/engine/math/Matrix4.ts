@@ -81,11 +81,10 @@ export default class Matrix4 {
     return this;
   }
 
-  initProjection(fov: number, width: number, height: number, zNear: number, zFar: number) {
+  initPerspective(fov: number, ar: number, zNear: number, zFar: number) {
     const m = this.m;
 
-    const ar = width / height;
-    const tanHalfFov = Math.tan(MathUtils.toRadians(fov / 2));
+    const tanHalfFov = Math.tan((fov / 2));
     const zRange = zNear - zFar;
 
     m[0][0] = 1 / (tanHalfFov * ar); m[0][1] = 0;                     m[0][2] = 0; m[0][3] = 0;

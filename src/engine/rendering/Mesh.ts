@@ -1,5 +1,5 @@
 import AssetManager from "../core/AssetManager";
-import { gl } from "./GraphicsUtil";
+import { gl } from "./RenderingEngine";
 import Shader from "./Shader";
 import { Vertex } from "./Vertex";
 
@@ -12,8 +12,8 @@ export default class Mesh {
     const vertices = AssetManager.getMesh(name).vertices;
     const indices = AssetManager.getMesh(name).indices;
 
-    if(calcNormals)
-      this.calcNormals(vertices,indices);
+    if (calcNormals)
+      this.calcNormals(vertices, indices);
 
     this.vbo = gl.createBuffer()!;
     this.ibo = gl.createBuffer()!;
@@ -55,10 +55,10 @@ export default class Mesh {
   }
 
   private calcNormals(vertices: Vertex[], indices: number[]) {
-    for(let i = 0; i < indices.length; i += 3) {
+    for (let i = 0; i < indices.length; i += 3) {
       const i0 = indices[i];
-      const i1 = indices[i+1];
-      const i2 = indices[i+2];
+      const i1 = indices[i + 1];
+      const i2 = indices[i + 2];
 
       const v1 = vertices[i1].pos.sub(vertices[i0].pos);
       const v2 = vertices[i2].pos.sub(vertices[i0].pos);
@@ -70,7 +70,7 @@ export default class Mesh {
       vertices[i2].normal = vertices[i2].normal.add(normal)
     }
 
-    for(let i = 0; i < vertices.length; i++) {
+    for (let i = 0; i < vertices.length; i++) {
       vertices[i].normal = vertices[i].normal.normalized;
     }
   }
