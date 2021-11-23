@@ -32,7 +32,7 @@ export default class Camera {
   }
 
   getViewProjection() {
-    const cameraRotation = new Matrix4().initCamera(
+    const cameraRotation = new Matrix4().initRotationDirections(
       this.forward,
       this.up
     );

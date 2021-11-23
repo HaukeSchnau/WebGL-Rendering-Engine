@@ -110,11 +110,11 @@ export default class Matrix4 {
     return this;
   }
 
-  initCamera(forward: Vector3, up: Vector3) {
+  initRotationDirections(forward: Vector3, up: Vector3, right?: Vector3) {
     const m = this.m;
 
     const f = forward.normalized;
-    const r = up.normalized.cross(f);
+    const r = right ?? up.normalized.cross(f);
     const u = f.cross(r);
 
     m[0][0] = r.x; m[0][1] = r.y; m[0][2] = r.z; m[0][3] = 0;

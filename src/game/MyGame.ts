@@ -35,13 +35,7 @@ export default class MyGame extends Game {
       new PointLight(new Vector3(0, 1, 0), 0.9, new Attenuation(0, 0, 1))
     );
     light.addComponent(
-      new SpotLight(
-        new Vector3(1, 0, 0),
-        0.6,
-        new Attenuation(0, 0, 1),
-        new Vector3(0, 0, 1),
-        0.1
-      )
+      new SpotLight(new Vector3(1, 0, 0), 0.6, new Attenuation(0, 0, 1), 0.1)
     );
 
     this.root.addChild(light);

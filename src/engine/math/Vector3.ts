@@ -53,19 +53,17 @@ export default class Vector3 {
   }
 
   rotate(angle: number, axis: Vector3) {
-    const sinHalfAngle = Math.sin(mathUtils.toRadians(angle / 2));
-    const cosHalfAngle = Math.cos(mathUtils.toRadians(angle / 2));
-
-    const rX = axis.x * sinHalfAngle;
-    const rY = axis.y * sinHalfAngle;
-    const rZ = axis.z * sinHalfAngle;
-    const rW = cosHalfAngle;
-
-    const rotation = new Quaternion(rX, rY, rZ, rW);
+    const rotation = new Quaternion().initRotation(axis, angle);
     const conjugate = rotation.conjugate;
 
     const w = rotation.mulVec(this).mul(conjugate);
 
+    return new Vector3(w.x, w.y, w.z);
+  }
+
+  rotateQuaternion(rotation: Quaternion) {
+    const conjugate = rotation.conjugate;
+    const w = rotation.mulVec(this).mul(conjugate);
     return new Vector3(w.x, w.y, w.z);
   }
 
