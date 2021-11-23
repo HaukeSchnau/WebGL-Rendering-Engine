@@ -22,9 +22,7 @@ export default class MyGame extends Game {
 
     const sphere = new GameObject();
     sphere.transform.translation.z = 5;
-    sphere.components.push(
-      new MeshRenderer(new Mesh("sphere", true), material)
-    );
+    sphere.addComponent(new MeshRenderer(new Mesh("sphere", true), material));
 
     const light = new GameObject();
     const directionalLight = new DirectionalLight(
@@ -32,29 +30,21 @@ export default class MyGame extends Game {
       0.4,
       new Vector3(1, 1, 1)
     );
-    light.components.push(directionalLight);
-    light.components.push(
-      new PointLight(
-        new Vector3(0, 1, 0),
-        0.4,
-        new Attenuation(0, 0, 1),
-        new Vector3(1, 0, 5),
-        100
-      )
+    light.addComponent(directionalLight);
+    light.addComponent(
+      new PointLight(new Vector3(0, 1, 0), 0.9, new Attenuation(0, 0, 1))
     );
-    light.components.push(
+    light.addComponent(
       new SpotLight(
         new Vector3(1, 0, 0),
         0.6,
         new Attenuation(0, 0, 1),
-        new Vector3(1, 0, 5),
-        100,
-        new Vector3(-1, 0, 0),
-        0.2
+        new Vector3(0, 0, 1),
+        0.1
       )
     );
 
-    this.root.children.push(light);
-    this.root.children.push(sphere);
+    this.root.addChild(light);
+    this.root.addChild(sphere);
   }
 }

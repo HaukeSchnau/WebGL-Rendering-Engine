@@ -1,4 +1,3 @@
-import Transform from "../core/Transform";
 import Material from "../rendering/Material";
 import Mesh from "../rendering/Mesh";
 import Shader from "../rendering/Shader";
@@ -14,9 +13,9 @@ export default class MeshRenderer extends GameComponent {
     this.material = material;
   }
 
-  render(transform: Transform, shader: Shader) {
+  render(shader: Shader) {
     shader.bind();
-    shader.updateUniforms(transform, this.material);
+    shader.updateUniforms(this.transform, this.material);
     this.mesh.draw(shader);
   }
 }

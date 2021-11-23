@@ -11,12 +11,10 @@ export default class SpotLight extends PointLight {
     color: Vector3,
     intensity: number,
     atten: Attenuation,
-    position: Vector3,
-    range: number,
     direction: Vector3,
     cutoff: number
   ) {
-    super(color, intensity, atten, position, range, ForwardSpot.instance);
+    super(color, intensity, atten, ForwardSpot.instance);
     this.direction = direction.normalized;
     this.cutoff = cutoff;
   }

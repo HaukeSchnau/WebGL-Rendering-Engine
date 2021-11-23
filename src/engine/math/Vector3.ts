@@ -94,4 +94,8 @@ export default class Vector3 {
   get abs() {
     return new Vector3(Math.abs(this.x), Math.abs(this.y), Math.abs(this.z));
   }
+
+  get max() {
+    return Math.max(this.x, this.y, this.z);
+  }
 }

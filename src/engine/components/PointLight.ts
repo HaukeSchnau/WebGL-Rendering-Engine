@@ -4,21 +4,24 @@ import Attenuation from "../rendering/Attenuation";
 import ForwardPoint from "../rendering/ForwardPoint";
 
 export default class PointLight extends BaseLight {
+  private static readonly COLOR_DEPTH = 256;
+
   atten: Attenuation;
-  position: Vector3;
   range: number;
 
   constructor(
     color: Vector3,
     intensity: number,
     atten: Attenuation,
-    position: Vector3,
-    range: number,
     shader = ForwardPoint.instance
   ) {
     super(color, intensity, shader);
     this.atten = atten;
-    this.position = position;
-    this.range = range;
+
+    let a = atten.exponent;
+    let b = atten.linear;
+    let c = atten.constant - PointLight.COLOR_DEPTH * intensity * color.max;
+
+    this.range = ((-b + Math.sqrt(b * b - 4 * a * c)) / 2) * a;
   }
 }

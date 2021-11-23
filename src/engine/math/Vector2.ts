@@ -12,26 +12,22 @@ export default class Vector2 {
   }
 
   add(r: Vector2 | number): Vector2 {
-    if (typeof r === "number")
-      return new Vector2(this.x + r, this.y + r);
+    if (typeof r === "number") return new Vector2(this.x + r, this.y + r);
     return new Vector2(this.x + r.x, this.y + r.y);
   }
 
   sub(r: Vector2 | number): Vector2 {
-    if (typeof r === "number")
-      return new Vector2(this.x - r, this.y - r);
+    if (typeof r === "number") return new Vector2(this.x - r, this.y - r);
     return new Vector2(this.x - r.x, this.y - r.y);
   }
 
   mul(r: Vector2 | number): Vector2 {
-    if (typeof r === "number")
-      return new Vector2(this.x * r, this.y * r);
+    if (typeof r === "number") return new Vector2(this.x * r, this.y * r);
     return new Vector2(this.x * r.x, this.y * r.y);
   }
 
   div(r: Vector2 | number): Vector2 {
-    if (typeof r === "number")
-      return new Vector2(this.x / r, this.y / r);
+    if (typeof r === "number") return new Vector2(this.x / r, this.y / r);
     return new Vector2(this.x / r.x, this.y / r.y);
   }
 
@@ -55,5 +51,9 @@ export default class Vector2 {
 
   get abs() {
     return new Vector2(Math.abs(this.x), Math.abs(this.y));
+  }
+
+  get max() {
+    return Math.max(this.x, this.y);
   }
 }

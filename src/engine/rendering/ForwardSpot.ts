@@ -75,7 +75,10 @@ export default class ForwardSpot extends Shader {
   setUniformPointLight(uniformName: string, pointLight: SpotLight) {
     this.setUniformBaseLight(uniformName + ".base", pointLight);
     this.setUniformAttenuation(uniformName + ".atten", pointLight.atten);
-    this.setUniform(uniformName + ".position", pointLight.position);
+    this.setUniform(
+      uniformName + ".position",
+      pointLight.transform.translation
+    );
     this.setUniformf(uniformName + ".range", pointLight.range);
   }
 
