@@ -42,7 +42,7 @@ export default class Shader {
     if (!gl.getProgramParameter(this.program, gl.LINK_STATUS)) {
       console.error(
         "Unable to initialize the shader program: " +
-        gl.getProgramInfoLog(this.program)
+          gl.getProgramInfoLog(this.program)
       );
     }
 
@@ -84,14 +84,18 @@ export default class Shader {
   }
 
   enableAttrib(name: string) {
-    gl.enableVertexAttribArray(this.getAttribLocation(name));
+    const location = this.getAttribLocation(name);
+    if (location === -1) return;
+    gl.enableVertexAttribArray(location);
   }
 
   disableAttrib(name: string) {
-    gl.disableVertexAttribArray(this.getAttribLocation(name));
+    const location = this.getAttribLocation(name);
+    if (location === -1) return;
+    gl.disableVertexAttribArray(location);
   }
 
-  updateUniforms(_transform: Transform, _material: Material) { }
+  updateUniforms(_transform: Transform, _material: Material) {}
 
   bind() {
     gl.useProgram(this.program);
@@ -106,7 +110,7 @@ export default class Shader {
     if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
       console.error(
         "An error occurred compiling the shaders: " +
-        gl.getShaderInfoLog(shader)
+          gl.getShaderInfoLog(shader)
       );
       gl.deleteShader(shader);
     }

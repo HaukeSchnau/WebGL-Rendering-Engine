@@ -1,13 +1,13 @@
 import Transform from "../core/Transform";
 import Vector3 from "../math/Vector3";
 import Attenuation from "./Attenuation";
-import BaseLight from "./BaseLight";
-import DirectionalLight from "./DirectionalLight";
+import BaseLight from "../components/BaseLight";
 import Material from "./Material";
-import PointLight from "./PointLight";
-import { currentRenderingEngine } from "./RenderingEngine";
 import Shader from "./Shader";
-import SpotLight from "./SpotLight";
+import SpotLight from "../components/SpotLight";
+import DirectionalLight from "../components/DirectionalLight";
+import PointLight from "../components/PointLight";
+import { currentRenderingEngine } from "./RenderingEngine";
 
 export default class PhongShader extends Shader {
   private static _instance: PhongShader;
@@ -17,7 +17,8 @@ export default class PhongShader extends Shader {
 
   ambientLight = new Vector3(0, 0, 0);
   directionalLight = new DirectionalLight(
-    new BaseLight(new Vector3(1, 1, 1), 0),
+    new Vector3(1, 1, 1),
+    0,
     new Vector3(0, 0, 0)
   );
   pointLights: PointLight[] = [];
@@ -44,36 +45,34 @@ export default class PhongShader extends Shader {
     );
 
     for (let i = 0; i < PhongShader.MAX_POINT_LIGHTS; i++) {
-      this.addUniform("pointLights[" + i + "].base.color")
-      this.addUniform("pointLights[" + i + "].base.intensity")
-      this.addUniform("pointLights[" + i + "].atten.constant")
-      this.addUniform("pointLights[" + i + "].atten.linear")
-      this.addUniform("pointLights[" + i + "].atten.exponent")
-      this.addUniform("pointLights[" + i + "].position")
-      this.addUniform("pointLights[" + i + "].range")
+      this.addUniform("pointLights[" + i + "].base.color");
+      this.addUniform("pointLights[" + i + "].base.intensity");
+      this.addUniform("pointLights[" + i + "].atten.constant");
+      this.addUniform("pointLights[" + i + "].atten.linear");
+      this.addUniform("pointLights[" + i + "].atten.exponent");
+      this.addUniform("pointLights[" + i + "].position");
+      this.addUniform("pointLights[" + i + "].range");
     }
 
     for (let i = 0; i < PhongShader.MAX_SPOT_LIGHTS; i++) {
-      this.addUniform("spotLights[" + i + "].pointLight.base.color")
-      this.addUniform("spotLights[" + i + "].pointLight.base.intensity")
-      this.addUniform("spotLights[" + i + "].pointLight.atten.constant")
-      this.addUniform("spotLights[" + i + "].pointLight.atten.linear")
-      this.addUniform("spotLights[" + i + "].pointLight.atten.exponent")
-      this.addUniform("spotLights[" + i + "].pointLight.position")
-      this.addUniform("spotLights[" + i + "].pointLight.range")
+      this.addUniform("spotLights[" + i + "].pointLight.base.color");
+      this.addUniform("spotLights[" + i + "].pointLight.base.intensity");
+      this.addUniform("spotLights[" + i + "].pointLight.atten.constant");
+      this.addUniform("spotLights[" + i + "].pointLight.atten.linear");
+      this.addUniform("spotLights[" + i + "].pointLight.atten.exponent");
+      this.addUniform("spotLights[" + i + "].pointLight.position");
+      this.addUniform("spotLights[" + i + "].pointLight.range");
 
-      this.addUniform("spotLights[" + i + "].direction")
-      this.addUniform("spotLights[" + i + "].cutoff")
-
+      this.addUniform("spotLights[" + i + "].direction");
+      this.addUniform("spotLights[" + i + "].cutoff");
     }
   }
 
-  updateUniforms(
-    transform: Transform,
-    material: Material
-  ) {
+  updateUniforms(transform: Transform, material: Material) {
     const worldMatrix = transform.getTransformation();
-    const projectedMatrix = currentRenderingEngine.mainCamera.getViewProjection().mul(worldMatrix);
+    const projectedMatrix = currentRenderingEngine.mainCamera
+      .getViewProjection()
+      .mul(worldMatrix);
 
     if (material.texture) material.texture.bind();
     else currentRenderingEngine.unbindTextures();
@@ -95,7 +94,6 @@ export default class PhongShader extends Shader {
     this.setUniformf("specularPower", material.specularPower);
 
     this.setUniform("eyePos", currentRenderingEngine.mainCamera.pos);
-
   }
 
   setUniformBaseLight(uniformName: string, baseLight: BaseLight) {
@@ -104,19 +102,19 @@ export default class PhongShader extends Shader {
   }
 
   setUniformDirLight(uniformName: string, directionalLight: DirectionalLight) {
-    this.setUniformBaseLight(uniformName + ".base", directionalLight.base);
+    this.setUniformBaseLight(uniformName + ".base", directionalLight);
     this.setUniform(uniformName + ".direction", directionalLight.direction);
   }
 
   setUniformPointLight(uniformName: string, pointLight: PointLight) {
-    this.setUniformBaseLight(uniformName + ".base", pointLight.baseLight);
+    this.setUniformBaseLight(uniformName + ".base", pointLight);
     this.setUniformAttenuation(uniformName + ".atten", pointLight.atten);
     this.setUniform(uniformName + ".position", pointLight.position);
     this.setUniformf(uniformName + ".range", pointLight.range);
   }
 
   setUniformSpotLight(uniformName: string, spotLight: SpotLight) {
-    this.setUniformPointLight(uniformName + ".pointLight", spotLight.pointLight);
+    this.setUniformPointLight(uniformName + ".pointLight", spotLight);
     this.setUniform(uniformName + ".direction", spotLight.direction);
     this.setUniformf(uniformName + ".cutoff", spotLight.cutoff);
   }

@@ -1,11 +1,10 @@
 import Transform from "../core/Transform";
 import Attenuation from "./Attenuation";
-import BaseLight from "./BaseLight";
+import BaseLight from "../components/BaseLight";
 import Material from "./Material";
-import PointLight from "./PointLight";
 import { currentRenderingEngine } from "./RenderingEngine";
 import Shader from "./Shader";
-import SpotLight from "./SpotLight";
+import SpotLight from "../components/SpotLight";
 
 export default class ForwardSpot extends Shader {
   private static _instance: ForwardSpot;
@@ -38,6 +37,8 @@ export default class ForwardSpot extends Shader {
   }
 
   updateUniforms(transform: Transform, material: Material) {
+    if (!currentRenderingEngine.activeLight) return;
+
     const worldMatrix = transform.getTransformation();
     const projectedMatrix = currentRenderingEngine.mainCamera
       .getViewProjection()
@@ -49,7 +50,10 @@ export default class ForwardSpot extends Shader {
     this.setUniform("model", worldMatrix);
     this.setUniform("MVP", projectedMatrix);
 
-    this.setUniformSpotLight("spotLight", currentRenderingEngine.spotLight);
+    this.setUniformSpotLight(
+      "spotLight",
+      currentRenderingEngine.activeLight as SpotLight
+    );
 
     this.setUniformf("specularIntensity", material.specularIntensity);
     this.setUniformf("specularPower", material.specularPower);
@@ -68,18 +72,15 @@ export default class ForwardSpot extends Shader {
     this.setUniformf(uniformName + ".exponent", atten.exponent);
   }
 
-  setUniformPointLight(uniformName: string, pointLight: PointLight) {
-    this.setUniformBaseLight(uniformName + ".base", pointLight.baseLight);
+  setUniformPointLight(uniformName: string, pointLight: SpotLight) {
+    this.setUniformBaseLight(uniformName + ".base", pointLight);
     this.setUniformAttenuation(uniformName + ".atten", pointLight.atten);
     this.setUniform(uniformName + ".position", pointLight.position);
     this.setUniformf(uniformName + ".range", pointLight.range);
   }
 
   setUniformSpotLight(uniformName: string, spotLight: SpotLight) {
-    this.setUniformPointLight(
-      uniformName + ".pointLight",
-      spotLight.pointLight
-    );
+    this.setUniformPointLight(uniformName + ".pointLight", spotLight);
     this.setUniform(uniformName + ".direction", spotLight.direction);
     this.setUniformf(uniformName + ".cutoff", spotLight.cutoff);
   }

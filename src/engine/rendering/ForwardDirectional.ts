@@ -1,9 +1,9 @@
 import Transform from "../core/Transform";
-import BaseLight from "./BaseLight";
-import DirectionalLight from "./DirectionalLight";
+import BaseLight from "../components/BaseLight";
 import Material from "./Material";
 import { currentRenderingEngine } from "./RenderingEngine";
 import Shader from "./Shader";
+import DirectionalLight from "../components/DirectionalLight";
 
 export default class ForwardDirectional extends Shader {
   private static _instance: ForwardDirectional;
@@ -30,6 +30,8 @@ export default class ForwardDirectional extends Shader {
   }
 
   updateUniforms(transform: Transform, material: Material) {
+    if (!currentRenderingEngine.activeLight) return;
+
     const worldMatrix = transform.getTransformation();
     const projectedMatrix = currentRenderingEngine.mainCamera
       .getViewProjection()
@@ -43,7 +45,7 @@ export default class ForwardDirectional extends Shader {
 
     this.setUniformDirLight(
       "directionalLight",
-      currentRenderingEngine.directionalLight
+      currentRenderingEngine.activeLight as DirectionalLight
     );
 
     this.setUniformf("specularIntensity", material.specularIntensity);
@@ -58,7 +60,7 @@ export default class ForwardDirectional extends Shader {
   }
 
   setUniformDirLight(uniformName: string, directionalLight: DirectionalLight) {
-    this.setUniformBaseLight(uniformName + ".base", directionalLight.base);
+    this.setUniformBaseLight(uniformName + ".base", directionalLight);
     this.setUniform(uniformName + ".direction", directionalLight.direction);
   }
 

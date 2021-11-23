@@ -2,15 +2,8 @@ import Camera from "../core/Camera";
 import GameObject from "../core/GameObject";
 import { toRadians } from "../math/MathUtils";
 import Vector3 from "../math/Vector3";
-import Attenuation from "./Attenuation";
-import BaseLight from "./BaseLight";
-import DirectionalLight from "./DirectionalLight";
 import ForwardAmbient from "./ForwardAmbient";
-import ForwardDirectional from "./ForwardDirectional";
-import ForwardPoint from "./ForwardPoint";
-import ForwardSpot from "./ForwardSpot";
-import PointLight from "./PointLight";
-import SpotLight from "./SpotLight";
+import BaseLight from "../components/BaseLight";
 
 export let currentRenderingEngine: RenderingEngine;
 export let gl: WebGL2RenderingContext;
@@ -20,27 +13,10 @@ const setGl = (newGl: WebGL2RenderingContext) => (gl = newGl);
 export default class RenderingEngine {
   gl: WebGL2RenderingContext;
   mainCamera: Camera;
-  ambientLight: Vector3 = new Vector3(0.2, 0.2, 0.2);
-  directionalLight = new DirectionalLight(
-    new BaseLight(new Vector3(1, 1, 1), 0.4),
-    new Vector3(1, 1, 1)
-  );
-  pointLight = new PointLight(
-    new BaseLight(new Vector3(0, 1, 0), 0.4),
-    new Attenuation(0, 0, 1),
-    new Vector3(1, 0, 5),
-    100
-  );
-  spotLight = new SpotLight(
-    new PointLight(
-      new BaseLight(new Vector3(1, 0, 0), 0.6),
-      new Attenuation(0, 0, 1),
-      new Vector3(1, 0, 5),
-      100
-    ),
-    new Vector3(-1, 0, 0),
-    0.2
-  );
+  ambientLight: Vector3 = new Vector3(0.1, 0.1, 0.1);
+
+  lights: BaseLight[] = [];
+  activeLight?: BaseLight;
 
   constructor(gl: WebGL2RenderingContext, width: number, height: number) {
     this.gl = gl;
@@ -56,8 +32,15 @@ export default class RenderingEngine {
     this.mainCamera = new Camera(toRadians(70), width / height, 0.1, 1000);
   }
 
+  private clearLightsList() {
+    this.lights = [];
+  }
+
   render(object: GameObject) {
     this.clearScreen();
+
+    this.clearLightsList();
+    object.addToRenderingEngine(this);
 
     currentRenderingEngine = this;
     setGl(gl);
@@ -69,9 +52,10 @@ export default class RenderingEngine {
     gl.depthMask(false);
     gl.depthFunc(gl.EQUAL);
 
-    object.render(ForwardDirectional.instance);
-    object.render(ForwardPoint.instance);
-    object.render(ForwardSpot.instance);
+    for (const light of this.lights) {
+      this.activeLight = light;
+      object.render(light.shader);
+    }
 
     gl.depthFunc(gl.LESS);
     gl.depthMask(true);

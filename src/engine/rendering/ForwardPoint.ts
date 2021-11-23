@@ -1,10 +1,10 @@
 import Transform from "../core/Transform";
 import Attenuation from "./Attenuation";
-import BaseLight from "./BaseLight";
+import BaseLight from "../components/BaseLight";
 import Material from "./Material";
-import PointLight from "./PointLight";
 import { currentRenderingEngine } from "./RenderingEngine";
 import Shader from "./Shader";
+import PointLight from "../components/PointLight";
 
 export default class ForwardPoint extends Shader {
   private static _instance: ForwardPoint;
@@ -35,6 +35,8 @@ export default class ForwardPoint extends Shader {
   }
 
   updateUniforms(transform: Transform, material: Material) {
+    if (!currentRenderingEngine.activeLight) return;
+
     const worldMatrix = transform.getTransformation();
     const projectedMatrix = currentRenderingEngine.mainCamera
       .getViewProjection()
@@ -46,7 +48,10 @@ export default class ForwardPoint extends Shader {
     this.setUniform("model", worldMatrix);
     this.setUniform("MVP", projectedMatrix);
 
-    this.setUniformPointLight("pointLight", currentRenderingEngine.pointLight);
+    this.setUniformPointLight(
+      "pointLight",
+      currentRenderingEngine.activeLight as PointLight
+    );
 
     this.setUniformf("specularIntensity", material.specularIntensity);
     this.setUniformf("specularPower", material.specularPower);
@@ -66,7 +71,7 @@ export default class ForwardPoint extends Shader {
   }
 
   setUniformPointLight(uniformName: string, pointLight: PointLight) {
-    this.setUniformBaseLight(uniformName + ".base", pointLight.baseLight);
+    this.setUniformBaseLight(uniformName + ".base", pointLight);
     this.setUniformAttenuation(uniformName + ".atten", pointLight.atten);
     this.setUniform(uniformName + ".position", pointLight.position);
     this.setUniformf(uniformName + ".range", pointLight.range);
