@@ -6,8 +6,6 @@ import Vector3 from "./engine/math/Vector3";
 import Vector2 from "./engine/math/Vector2";
 
 (async () => {
-  await AssetManager.loadShader("basicShader");
-  await AssetManager.loadShader("phongShader");
   await AssetManager.loadShader("forward-ambient");
   await AssetManager.loadShader("forward-directional");
   await AssetManager.loadShader("forward-point");

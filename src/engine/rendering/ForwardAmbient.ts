@@ -2,6 +2,7 @@ import Transform from "../core/Transform";
 import Material from "./Material";
 import { currentRenderingEngine } from "./RenderingEngine";
 import Shader from "./Shader";
+import { Texture } from "./Texture";
 
 export default class ForwardAmbient extends Shader {
   private static _instance: ForwardAmbient;
@@ -20,7 +21,8 @@ export default class ForwardAmbient extends Shader {
       .getViewProjection()
       .mul(worldMatrix);
 
-    if (material.texture) material.texture.bind();
+    const texture = material.attributes.get("diffuse");
+    if (texture instanceof Texture) texture.bind();
     else currentRenderingEngine.unbindTextures();
 
     this.setUniform("MVP", projectedMatrix);

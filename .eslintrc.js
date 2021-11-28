@@ -29,6 +29,8 @@ module.exports = {
     ],
     "import/no-cycle": "off",
     "lines-between-class-members": "off",
+    "no-use-before-define": "off",
+    "no-underscore-dangle": "off",
   },
   settings: {
     "import/resolver": {

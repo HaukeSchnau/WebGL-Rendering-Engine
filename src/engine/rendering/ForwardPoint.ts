@@ -5,6 +5,7 @@ import Material from "./Material";
 import { currentRenderingEngine } from "./RenderingEngine";
 import Shader from "./Shader";
 import PointLight from "../components/PointLight";
+import { Texture } from "./Texture";
 
 export default class ForwardPoint extends Shader {
   private static _instance: ForwardPoint;
@@ -42,7 +43,8 @@ export default class ForwardPoint extends Shader {
       .getViewProjection()
       .mul(worldMatrix);
 
-    if (material.texture) material.texture.bind();
+    const texture = material.attributes.get("diffuse");
+    if (texture instanceof Texture) texture.bind();
     else currentRenderingEngine.unbindTextures();
 
     this.setUniform("model", worldMatrix);
@@ -53,8 +55,13 @@ export default class ForwardPoint extends Shader {
       currentRenderingEngine.activeLight as PointLight
     );
 
-    this.setUniformf("specularIntensity", material.specularIntensity);
-    this.setUniformf("specularPower", material.specularPower);
+    const specularIntensity = material.attributes.get("specularIntensity");
+    if (typeof specularIntensity === "number")
+      this.setUniformf("specularIntensity", specularIntensity);
+
+    const specularPower = material.attributes.get("specularPower");
+    if (typeof specularPower === "number")
+      this.setUniformf("specularPower", specularPower);
 
     this.setUniform(
       "eyePos",

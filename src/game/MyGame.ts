@@ -18,10 +18,10 @@ export default class MyGame extends Game {
     const canvas = document.querySelector<HTMLCanvasElement>("#canvas")!;
     super(canvas);
 
-    const material = new Material(
-      new Texture("/img/missing.png"),
-      new Vector3(1, 1, 1)
-    );
+    const material = new Material();
+    material.attributes.set("diffuse", new Texture("img/missing.png"));
+    material.attributes.set("specularIntensity", 1);
+    material.attributes.set("specularPower", 8);
 
     const sphere = new GameObject();
     sphere.transform.translation.z = 5;
