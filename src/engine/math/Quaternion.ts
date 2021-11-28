@@ -114,6 +114,6 @@ export default class Quaternion {
   }
 
   equals(r: Quaternion) {
-    return this.x === r.x && this.y === r.y && this.z == r.z && this.w === r.w;
+    return this.x === r.x && this.y === r.y && this.z === r.z && this.w === r.w;
   }
 }

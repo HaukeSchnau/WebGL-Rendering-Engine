@@ -1,6 +1,6 @@
 import { gl } from "./RenderingEngine";
 
-export class Texture {
+export default class Texture {
   texture: WebGLTexture;
 
   constructor(url: string) {
@@ -63,5 +63,5 @@ export class Texture {
 }
 
 function isPowerOf2(value: number) {
-  return (value & (value - 1)) == 0;
+  return (value & (value - 1)) === 0;
 }

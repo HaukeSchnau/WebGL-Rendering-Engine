@@ -41,10 +41,11 @@ export default class GameObject {
     for (const child of this.children) child.update(delta);
   }
 
-  render(shader: Shader) {
-    for (const component of this.components) component.render(shader);
+  render(shader: Shader, renderingEngine: RenderingEngine) {
+    for (const component of this.components)
+      component.render(shader, renderingEngine);
 
-    for (const child of this.children) child.render(shader);
+    for (const child of this.children) child.render(shader, renderingEngine);
   }
 
   addToRenderingEngine(renderingEngine: RenderingEngine) {

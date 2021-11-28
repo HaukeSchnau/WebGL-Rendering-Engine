@@ -1,7 +1,7 @@
 import AssetManager from "../core/AssetManager";
 import { gl } from "./RenderingEngine";
 import Shader from "./Shader";
-import { Vertex } from "./Vertex";
+import Vertex from "./Vertex";
 
 export default class Mesh {
   private vbo: WebGLBuffer;

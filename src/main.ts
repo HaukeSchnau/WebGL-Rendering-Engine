@@ -1,17 +1,17 @@
 import "./style.css";
 import MyGame from "./game/MyGame";
-import AssetManager from "./engine/core/AssetManager";
-import { Vertex } from "./engine/rendering/Vertex";
+import Vertex from "./engine/rendering/Vertex";
 import Vector3 from "./engine/math/Vector3";
 import Vector2 from "./engine/math/Vector2";
+import { loadShader, loadMesh, addMesh } from "./engine/core/AssetManager";
 
 (async () => {
-  await AssetManager.loadShader("forward-ambient");
-  await AssetManager.loadShader("forward-directional");
-  await AssetManager.loadShader("forward-point");
-  await AssetManager.loadShader("forward-spot");
-  await AssetManager.loadMesh("monkey");
-  await AssetManager.loadMesh("sphere");
+  await loadShader("forward-ambient");
+  await loadShader("forward-directional");
+  await loadShader("forward-point");
+  await loadShader("forward-spot");
+  await loadMesh("monkey");
+  await loadMesh("sphere");
 
   const vertices = [
     new Vertex(new Vector3(-1.0, -1.0, 0.5773), new Vector2(0, 0)),
@@ -28,7 +28,7 @@ import Vector2 from "./engine/math/Vector2";
     1, 2, 0
   ];
 
-  AssetManager.addMesh("pyramid", vertices, indices);
+  addMesh("pyramid", vertices, indices);
 
   const fieldDepth = 10;
   const fieldWidth = 10;
@@ -48,7 +48,7 @@ import Vector2 from "./engine/math/Vector2";
     2, 1, 3
   ];
 
-  AssetManager.addMesh("plane", verticesPlane, indicesPlane);
+  addMesh("plane", verticesPlane, indicesPlane);
 
   const game = new MyGame();
   game.start();

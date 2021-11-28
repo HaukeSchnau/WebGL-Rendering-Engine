@@ -1,6 +1,6 @@
 import Vector2 from "../math/Vector2";
 import Vector3 from "../math/Vector3";
-import { Vertex } from "../rendering/Vertex";
+import Vertex from "../rendering/Vertex";
 import { removeEmptyStrings } from "./Util";
 
 type Assets = {
@@ -31,8 +31,8 @@ const loadedAssets: Assets = {
   shaders: {},
 };
 
-async function loadTextFile(url: string) {
-  return await fetch(url).then((res) => res.text());
+function loadTextFile(url: string) {
+  return fetch(url).then((res) => res.text());
 }
 
 export async function loadShader(name: string) {
@@ -54,7 +54,7 @@ export async function loadMesh(name: string) {
     let tokens = line.split(" ");
     tokens = removeEmptyStrings(tokens);
 
-    if (tokens.length == 0 || tokens[0] === "#") {
+    if (tokens.length === 0 || tokens[0] === "#") {
       continue;
     } else if (tokens[0] === "v") {
       vertices.push(

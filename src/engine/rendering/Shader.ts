@@ -3,7 +3,7 @@ import Transform from "../core/Transform";
 import Matrix4 from "../math/Matrix4";
 import Vector3 from "../math/Vector3";
 import Material from "./Material";
-import { gl } from "./RenderingEngine";
+import RenderingEngine, { gl } from "./RenderingEngine";
 
 interface AttribLocations {
   [key: string]: number;
@@ -96,7 +96,11 @@ export default class Shader {
     gl.disableVertexAttribArray(location);
   }
 
-  updateUniforms(_transform: Transform, _material: Material) {}
+  updateUniforms(
+    _transform: Transform,
+    _material: Material,
+    _renderingEngine: RenderingEngine
+  ) {}
 
   bind() {
     gl.useProgram(this.program);

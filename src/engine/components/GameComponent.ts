@@ -10,7 +10,7 @@ export default abstract class GameComponent {
   mouseMove(_mouseMovement: Vector2): void {}
   input(_delta: number): void {}
   update(_delta: number): void {}
-  render(_shader: Shader): void {}
+  render(_shader: Shader, _renderingEngine: RenderingEngine): void {}
 
   addToRenderingEngine(_renderingEngine: RenderingEngine): void {}
 

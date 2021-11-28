@@ -1,10 +1,10 @@
 import Transform from "../core/Transform";
 import BaseLight from "../components/BaseLight";
 import Material from "./Material";
-import { currentRenderingEngine } from "./RenderingEngine";
 import Shader from "./Shader";
 import DirectionalLight from "../components/DirectionalLight";
-import { Texture } from "./Texture";
+import RenderingEngine from "./RenderingEngine";
+import Texture from "./Texture";
 
 export default class ForwardDirectional extends Shader {
   private static _instance: ForwardDirectional;
@@ -30,24 +30,28 @@ export default class ForwardDirectional extends Shader {
     );
   }
 
-  updateUniforms(transform: Transform, material: Material) {
-    if (!currentRenderingEngine.activeLight) return;
+  updateUniforms(
+    transform: Transform,
+    material: Material,
+    renderingEngine: RenderingEngine
+  ) {
+    if (!renderingEngine.activeLight) return;
 
     const worldMatrix = transform.getTransformation();
-    const projectedMatrix = currentRenderingEngine.mainCamera
+    const projectedMatrix = renderingEngine.mainCamera
       .getViewProjection()
       .mul(worldMatrix);
 
     const texture = material.attributes.get("diffuse");
     if (texture instanceof Texture) texture.bind();
-    else currentRenderingEngine.unbindTextures();
+    else renderingEngine.unbindTextures();
 
     this.setUniform("model", worldMatrix);
     this.setUniform("MVP", projectedMatrix);
 
     this.setUniformDirLight(
       "directionalLight",
-      currentRenderingEngine.activeLight as DirectionalLight
+      renderingEngine.activeLight as DirectionalLight
     );
 
     const specularIntensity = material.attributes.get("specularIntensity");
@@ -60,7 +64,7 @@ export default class ForwardDirectional extends Shader {
 
     this.setUniform(
       "eyePos",
-      currentRenderingEngine.mainCamera.transform.getTransformedTranslation()
+      renderingEngine.mainCamera.transform.getTransformedTranslation()
     );
   }
 

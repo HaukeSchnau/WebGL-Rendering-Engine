@@ -1,8 +1,8 @@
 import Transform from "../core/Transform";
 import Material from "./Material";
-import { currentRenderingEngine } from "./RenderingEngine";
+import RenderingEngine from "./RenderingEngine";
 import Shader from "./Shader";
-import { Texture } from "./Texture";
+import Texture from "./Texture";
 
 export default class ForwardAmbient extends Shader {
   private static _instance: ForwardAmbient;
@@ -15,18 +15,22 @@ export default class ForwardAmbient extends Shader {
     );
   }
 
-  updateUniforms(transform: Transform, material: Material) {
+  updateUniforms(
+    transform: Transform,
+    material: Material,
+    renderingEngine: RenderingEngine
+  ) {
     const worldMatrix = transform.getTransformation();
-    const projectedMatrix = currentRenderingEngine.mainCamera
+    const projectedMatrix = renderingEngine.mainCamera
       .getViewProjection()
       .mul(worldMatrix);
 
     const texture = material.attributes.get("diffuse");
     if (texture instanceof Texture) texture.bind();
-    else currentRenderingEngine.unbindTextures();
+    else renderingEngine.unbindTextures();
 
     this.setUniform("MVP", projectedMatrix);
-    this.setUniform("ambientIntensity", currentRenderingEngine.ambientLight);
+    this.setUniform("ambientIntensity", renderingEngine.ambientLight);
   }
 
   static get instance() {

@@ -5,10 +5,11 @@ import Vector3 from "../math/Vector3";
 import ForwardAmbient from "./ForwardAmbient";
 import BaseLight from "../components/BaseLight";
 
-export let currentRenderingEngine: RenderingEngine;
 export let gl: WebGL2RenderingContext;
 
-const setGl = (newGl: WebGL2RenderingContext) => (gl = newGl);
+const setGl = (newGl: WebGL2RenderingContext) => {
+  gl = newGl;
+};
 
 export default class RenderingEngine {
   gl: WebGL2RenderingContext;
@@ -42,10 +43,9 @@ export default class RenderingEngine {
     this.clearLightsList();
     object.addToRenderingEngine(this);
 
-    currentRenderingEngine = this;
     setGl(gl);
 
-    object.render(ForwardAmbient.instance);
+    object.render(ForwardAmbient.instance, this);
 
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.ONE, gl.ONE);
@@ -54,7 +54,7 @@ export default class RenderingEngine {
 
     for (const light of this.lights) {
       this.activeLight = light;
-      object.render(light.shader);
+      object.render(light.shader, this);
     }
 
     gl.depthFunc(gl.LESS);

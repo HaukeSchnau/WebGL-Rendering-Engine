@@ -6,7 +6,7 @@ import Attenuation from "../engine/rendering/Attenuation";
 import Material from "../engine/rendering/Material";
 import Mesh from "../engine/rendering/Mesh";
 import SpotLight from "../engine/components/SpotLight";
-import { Texture } from "../engine/rendering/Texture";
+import Texture from "../engine/rendering/Texture";
 import DirectionalLight from "../engine/components/DirectionalLight";
 import PointLight from "../engine/components/PointLight";
 import Camera from "../engine/components/Camera";

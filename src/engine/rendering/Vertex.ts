@@ -1,7 +1,7 @@
 import Vector2 from "../math/Vector2";
 import Vector3 from "../math/Vector3";
 
-export class Vertex {
+export default class Vertex {
   public static readonly SIZE = 8;
   pos: Vector3;
   texCoord: Vector2;

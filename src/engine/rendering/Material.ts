@@ -1,5 +1,5 @@
 import Vector3 from "../math/Vector3";
-import { Texture } from "./Texture";
+import Texture from "./Texture";
 
 type MaterialAttribute = Texture | Vector3 | number;
 

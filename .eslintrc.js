@@ -31,6 +31,28 @@ module.exports = {
     "lines-between-class-members": "off",
     "no-use-before-define": "off",
     "no-underscore-dangle": "off",
+    "no-shadow": "off",
+    "no-unused-vars": [
+      "error",
+      {
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+        caughtErrorsIgnorePattern: "^_",
+      },
+    ],
+    "class-methods-use-this": "off",
+    "no-restricted-syntax": [
+      "error",
+      "ForInStatement",
+      "LabeledStatement",
+      "WithStatement",
+    ],
+    "no-param-reassign": "off",
+    "no-plusplus": "off",
+    "no-bitwise": "off",
+    "no-continue": "off",
+    radix: "off",
+    "import/no-mutable-exports": "off",
   },
   settings: {
     "import/resolver": {

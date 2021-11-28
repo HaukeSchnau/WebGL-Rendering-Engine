@@ -2,10 +2,10 @@ import Transform from "../core/Transform";
 import Attenuation from "./Attenuation";
 import BaseLight from "../components/BaseLight";
 import Material from "./Material";
-import { currentRenderingEngine } from "./RenderingEngine";
 import Shader from "./Shader";
 import SpotLight from "../components/SpotLight";
-import { Texture } from "./Texture";
+import Texture from "./Texture";
+import RenderingEngine from "./RenderingEngine";
 
 export default class ForwardSpot extends Shader {
   private static _instance: ForwardSpot;
@@ -37,24 +37,28 @@ export default class ForwardSpot extends Shader {
     );
   }
 
-  updateUniforms(transform: Transform, material: Material) {
-    if (!currentRenderingEngine.activeLight) return;
+  updateUniforms(
+    transform: Transform,
+    material: Material,
+    renderingEngine: RenderingEngine
+  ) {
+    if (!renderingEngine.activeLight) return;
 
     const worldMatrix = transform.getTransformation();
-    const projectedMatrix = currentRenderingEngine.mainCamera
+    const projectedMatrix = renderingEngine.mainCamera
       .getViewProjection()
       .mul(worldMatrix);
 
     const texture = material.attributes.get("diffuse");
     if (texture instanceof Texture) texture.bind();
-    else currentRenderingEngine.unbindTextures();
+    else renderingEngine.unbindTextures();
 
     this.setUniform("model", worldMatrix);
     this.setUniform("MVP", projectedMatrix);
 
     this.setUniformSpotLight(
       "spotLight",
-      currentRenderingEngine.activeLight as SpotLight
+      renderingEngine.activeLight as SpotLight
     );
 
     const specularIntensity = material.attributes.get("specularIntensity");
@@ -67,7 +71,7 @@ export default class ForwardSpot extends Shader {
 
     this.setUniform(
       "eyePos",
-      currentRenderingEngine.mainCamera.transform.getTransformedTranslation()
+      renderingEngine.mainCamera.transform.getTransformedTranslation()
     );
   }
 
