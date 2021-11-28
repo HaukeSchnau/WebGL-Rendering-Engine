@@ -1,4 +1,4 @@
-import AssetManager from "../core/AssetManager";
+import { getMesh } from "../core/AssetManager";
 import { gl } from "./RenderingEngine";
 import Shader from "./Shader";
 import Vertex from "./Vertex";
@@ -9,8 +9,8 @@ export default class Mesh {
   private size: number;
 
   constructor(name: string, calcNormals = false) {
-    const { vertices } = AssetManager.getMesh(name);
-    const { indices } = AssetManager.getMesh(name);
+    const { vertices } = getMesh(name);
+    const { indices } = getMesh(name);
 
     if (calcNormals) this.calcNormals(vertices, indices);
 

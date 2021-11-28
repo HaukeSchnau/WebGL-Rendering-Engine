@@ -1,7 +1,5 @@
-import Vector2 from "../math/Vector2";
-import Vector3 from "../math/Vector3";
+import ObjModel from "../rendering/loader/mesh/ObjModel";
 import Vertex from "../rendering/Vertex";
-import { removeEmptyStrings } from "./Util";
 
 type Assets = {
   meshes: MeshAssets;
@@ -45,38 +43,20 @@ export async function loadShader(name: string) {
 export async function loadMesh(name: string) {
   const raw = await loadTextFile(`/obj/${name}.obj`);
 
-  const vertices: Vertex[] = [];
-  const indices: number[] = [];
+  const objModel = new ObjModel(raw);
+  const indexedModel = objModel.toIndexedModel();
+  indexedModel.calcNormals();
 
-  const lines = raw.split("\n");
+  const vertices = indexedModel.positions.map(
+    (_, i) =>
+      new Vertex(
+        indexedModel.positions[i],
+        indexedModel.texCoords[i],
+        indexedModel.normals[i]
+      )
+  );
 
-  for (const line of lines) {
-    let tokens = line.split(" ");
-    tokens = removeEmptyStrings(tokens);
-
-    if (tokens.length === 0 || tokens[0] === "#") {
-      continue;
-    } else if (tokens[0] === "v") {
-      vertices.push(
-        new Vertex(
-          new Vector3(
-            parseFloat(tokens[1]),
-            parseFloat(tokens[2]),
-            parseFloat(tokens[3])
-          ),
-          new Vector2(0, 0) // TODO
-        )
-      );
-    } else if (tokens[0] === "f") {
-      indices.push(
-        parseInt(tokens[1]) - 1,
-        parseInt(tokens[2]) - 1,
-        parseInt(tokens[3]) - 1
-      );
-    }
-  }
-
-  addMesh(name, vertices, indices);
+  addMesh(name, vertices, indexedModel.indices);
 }
 
 export function getVertexShader(name: string) {
@@ -97,12 +77,3 @@ export function addMesh(name: string, vertices: Vertex[], indices: number[]) {
     indices,
   };
 }
-
-export default {
-  getVertexShader,
-  getFragmentShader,
-  loadShader,
-  loadMesh,
-  getMesh,
-  addMesh,
-};

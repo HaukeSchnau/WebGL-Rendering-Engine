@@ -25,7 +25,7 @@ export default class MyGame extends Game {
 
     const sphere = new GameObject();
     sphere.transform.translation.z = 5;
-    sphere.addComponent(new MeshRenderer(new Mesh("sphere", true), material));
+    sphere.addComponent(new MeshRenderer(new Mesh("sphere"), material));
 
     this.root.addChild(
       new GameObject().addComponent(
@@ -41,7 +41,7 @@ export default class MyGame extends Game {
     this.root.addChild(pyramid);
 
     const monkey = new GameObject().addComponent(
-      new MeshRenderer(new Mesh("monkey", true), material)
+      new MeshRenderer(new Mesh("monkey2"), material)
     );
     monkey.transform.translation.x = -3;
     monkey.transform.translation.z = 7;
@@ -69,7 +69,7 @@ export default class MyGame extends Game {
         1000
       )
     );
-    player.addChild(monkey);
+    this.root.addChild(monkey);
     this.root.addChild(player);
     directionalLight.transform.rotation = new Quaternion().initRotation(
       new Vector3(1, 0, 0),

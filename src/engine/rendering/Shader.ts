@@ -1,4 +1,4 @@
-import AssetManager from "../core/AssetManager";
+import { getVertexShader, getFragmentShader } from "../core/AssetManager";
 import Transform from "../core/Transform";
 import Matrix4 from "../math/Matrix4";
 import Vector3 from "../math/Vector3";
@@ -25,13 +25,10 @@ export default class Shader {
     attribNames: string[] = [],
     uniformNames: string[] = []
   ) {
-    this.vertex = Shader.compileShader(
-      gl.VERTEX_SHADER,
-      AssetManager.getVertexShader(name)
-    );
+    this.vertex = Shader.compileShader(gl.VERTEX_SHADER, getVertexShader(name));
     this.fragment = Shader.compileShader(
       gl.FRAGMENT_SHADER,
-      AssetManager.getFragmentShader(name)
+      getFragmentShader(name)
     );
 
     this.program = gl.createProgram()!;

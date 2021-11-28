@@ -11,6 +11,7 @@ import { loadShader, loadMesh, addMesh } from "./engine/core/AssetManager";
   await loadShader("forward-point");
   await loadShader("forward-spot");
   await loadMesh("monkey");
+  await loadMesh("monkey2");
   await loadMesh("sphere");
 
   const vertices = [
