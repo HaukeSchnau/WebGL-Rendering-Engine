@@ -5,11 +5,13 @@ import Shader from "../rendering/Shader";
 import Transform from "./Transform";
 
 export default class GameObject {
-  private children: GameObject[] = [];
-  private components: GameComponent[] = [];
+  parent?: GameObject;
+  children: GameObject[] = [];
+  components: GameComponent[] = [];
   transform: Transform = new Transform();
 
   addChild(child: GameObject) {
+    child.parent = this;
     child.transform.parent = this.transform;
     this.children.push(child);
     return this;
@@ -19,6 +21,10 @@ export default class GameObject {
     component.parent = this;
     this.components.push(component);
     return this;
+  }
+
+  get siblings() {
+    return this.parent?.children ?? [];
   }
 
   mouseMove(mouseMovement: Vector2) {

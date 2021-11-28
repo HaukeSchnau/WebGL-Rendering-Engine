@@ -57,14 +57,15 @@ export default class Mesh {
       Vertex.SIZE * 4,
       3 * 4
     );
-    gl.vertexAttribPointer(
-      shader.getAttribLocation("normal"),
-      3,
-      gl.FLOAT,
-      false,
-      Vertex.SIZE * 4,
-      5 * 4
-    );
+    if (shader.getAttribLocation("normal") !== -1)
+      gl.vertexAttribPointer(
+        shader.getAttribLocation("normal"),
+        3,
+        gl.FLOAT,
+        false,
+        Vertex.SIZE * 4,
+        5 * 4
+      );
 
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.ibo);
     gl.drawElements(gl.TRIANGLES, this.size, gl.UNSIGNED_SHORT, 0);

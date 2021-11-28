@@ -1,7 +1,4 @@
-import { isKeyDown } from "../core/Input";
-import { toRadians } from "../math/MathUtils";
 import Matrix4 from "../math/Matrix4";
-import Vector2 from "../math/Vector2";
 import Vector3 from "../math/Vector3";
 import RenderingEngine from "../rendering/RenderingEngine";
 import GameComponent from "./GameComponent";
@@ -45,60 +42,6 @@ export default class Camera extends GameComponent {
     );
 
     return this.projection.mul(cameraRotation.mul(cameraTranslation));
-  }
-
-  move(dir: Vector3, amt: number) {
-    this.transform.translation = this.transform.translation.add(
-      dir.normalized.mul(amt)
-    );
-  }
-
-  rotateY(angle: number) {
-    this.transform.rotate(Camera.yAxis, angle);
-  }
-
-  rotateX(angle: number) {
-    this.transform.rotate(this.transform.rotation.right, angle);
-  }
-
-  yVelocity = 0;
-
-  override input(deltaTime: number) {
-    const speed = 5;
-    const xz = new Vector3(1, 0, 1);
-
-    if (isKeyDown("KeyW")) {
-      this.move(this.transform.rotation.forward.mul(xz), speed * deltaTime);
-    }
-    if (isKeyDown("KeyA")) {
-      this.move(this.transform.rotation.left.mul(xz), speed * deltaTime);
-    }
-    if (isKeyDown("KeyS")) {
-      this.move(this.transform.rotation.back.mul(xz), speed * deltaTime);
-    }
-    if (isKeyDown("KeyD")) {
-      this.move(this.transform.rotation.right.mul(xz), speed * deltaTime);
-    }
-    if (isKeyDown("Space") && this.transform.translation.y <= 0) {
-      this.yVelocity = 10;
-    }
-    if (isKeyDown("ArrowDown")) this.rotateX(toRadians(2));
-    if (isKeyDown("ArrowUp")) this.rotateX(toRadians(-2));
-    if (isKeyDown("ArrowLeft")) this.rotateY(toRadians(-2));
-    if (isKeyDown("ArrowRight")) this.rotateY(toRadians(2));
-
-    this.yVelocity -= 0.2;
-    if (this.transform.translation.y < 0) {
-      this.transform.translation.y = -0.1;
-      if (this.yVelocity < 0) this.yVelocity = 0;
-    }
-
-    this.move(Camera.yAxis, this.yVelocity * deltaTime);
-  }
-
-  override mouseMove(movement: Vector2) {
-    this.rotateY(movement.x * 0.002);
-    this.rotateX(movement.y * 0.002);
   }
 
   override addToRenderingEngine(renderingEngine: RenderingEngine) {

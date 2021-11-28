@@ -70,9 +70,7 @@ export default class RenderingEngine {
     return this.gl.getParameter(this.gl.VERSION);
   }
 
-  unbindTextures() {
-    this.gl.bindTexture(this.gl.TEXTURE_2D, 0);
-  }
+  unbindTextures() {}
 
   resize(width: number, height: number) {
     this.gl.viewport(0, 0, width, height);
