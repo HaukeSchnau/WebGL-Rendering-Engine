@@ -65,30 +65,30 @@ export default class ForwardSpot extends Shader {
   }
 
   setUniformBaseLight(uniformName: string, baseLight: BaseLight) {
-    this.setUniform(uniformName + ".color", baseLight.color);
-    this.setUniformf(uniformName + ".intensity", baseLight.intensity);
+    this.setUniform(`${uniformName}.color`, baseLight.color);
+    this.setUniformf(`${uniformName}.intensity`, baseLight.intensity);
   }
 
   setUniformAttenuation(uniformName: string, atten: Attenuation) {
-    this.setUniformf(uniformName + ".constant", atten.constant);
-    this.setUniformf(uniformName + ".linear", atten.linear);
-    this.setUniformf(uniformName + ".exponent", atten.exponent);
+    this.setUniformf(`${uniformName}.constant`, atten.constant);
+    this.setUniformf(`${uniformName}.linear`, atten.linear);
+    this.setUniformf(`${uniformName}.exponent`, atten.exponent);
   }
 
   setUniformPointLight(uniformName: string, pointLight: SpotLight) {
-    this.setUniformBaseLight(uniformName + ".base", pointLight);
-    this.setUniformAttenuation(uniformName + ".atten", pointLight.atten);
+    this.setUniformBaseLight(`${uniformName}.base`, pointLight);
+    this.setUniformAttenuation(`${uniformName}.atten`, pointLight.atten);
     this.setUniform(
-      uniformName + ".position",
+      `${uniformName}.position`,
       pointLight.transform.getTransformedTranslation()
     );
-    this.setUniformf(uniformName + ".range", pointLight.range);
+    this.setUniformf(`${uniformName}.range`, pointLight.range);
   }
 
   setUniformSpotLight(uniformName: string, spotLight: SpotLight) {
-    this.setUniformPointLight(uniformName + ".pointLight", spotLight);
-    this.setUniform(uniformName + ".direction", spotLight.direction);
-    this.setUniformf(uniformName + ".cutoff", spotLight.cutoff);
+    this.setUniformPointLight(`${uniformName}.pointLight`, spotLight);
+    this.setUniform(`${uniformName}.direction`, spotLight.direction);
+    this.setUniformf(`${uniformName}.cutoff`, spotLight.cutoff);
   }
 
   static get instance() {

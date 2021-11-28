@@ -1,5 +1,5 @@
 import Vector3 from "../math/Vector3";
-import BaseLight from "../components/BaseLight";
+import BaseLight from "./BaseLight";
 import Attenuation from "../rendering/Attenuation";
 import ForwardPoint from "../rendering/ForwardPoint";
 
@@ -18,9 +18,9 @@ export default class PointLight extends BaseLight {
     super(color, intensity, shader);
     this.atten = atten;
 
-    let a = atten.exponent;
-    let b = atten.linear;
-    let c = atten.constant - PointLight.COLOR_DEPTH * intensity * color.max;
+    const a = atten.exponent;
+    const b = atten.linear;
+    const c = atten.constant - PointLight.COLOR_DEPTH * intensity * color.max;
 
     this.range = ((-b + Math.sqrt(b * b - 4 * a * c)) / 2) * a;
   }

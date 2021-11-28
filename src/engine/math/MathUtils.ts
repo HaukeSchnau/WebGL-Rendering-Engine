@@ -3,5 +3,5 @@ export function toRadians(deg: number) {
 }
 
 export default {
-  toRadians
-}
+  toRadians,
+};

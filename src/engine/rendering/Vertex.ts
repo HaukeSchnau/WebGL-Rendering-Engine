@@ -7,7 +7,11 @@ export class Vertex {
   texCoord: Vector2;
   normal: Vector3;
 
-  constructor(pos: Vector3, texCoord = new Vector2(0,0), normal = new Vector3(0,0,0)) {
+  constructor(
+    pos: Vector3,
+    texCoord = new Vector2(0, 0),
+    normal = new Vector3(0, 0, 0)
+  ) {
     this.pos = pos;
     this.texCoord = texCoord;
     this.normal = normal;

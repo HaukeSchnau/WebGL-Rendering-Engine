@@ -60,7 +60,7 @@ export default class Vector3 {
   }
 
   rotateQuaternion(rotation: Quaternion) {
-    const conjugate = rotation.conjugate;
+    const { conjugate } = rotation;
     const w = rotation.mulVec(this).mul(conjugate);
     return new Vector3(w.x, w.y, w.z);
   }
@@ -70,7 +70,7 @@ export default class Vector3 {
   }
 
   get normalized() {
-    const length = this.length;
+    const { length } = this;
 
     return new Vector3(this.x / length, this.y / length, this.z / length);
   }

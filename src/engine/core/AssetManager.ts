@@ -37,20 +37,20 @@ async function loadTextFile(url: string) {
 
 export async function loadShader(name: string) {
   loadedAssets.shaders[name] = {
-    vertex: await loadTextFile("/glsl/" + name + ".vs"),
-    fragment: await loadTextFile("/glsl/" + name + ".fs"),
+    vertex: await loadTextFile(`/glsl/${name}.vs`),
+    fragment: await loadTextFile(`/glsl/${name}.fs`),
   };
 }
 
 export async function loadMesh(name: string) {
-  const raw = await loadTextFile("/obj/" + name + ".obj");
+  const raw = await loadTextFile(`/obj/${name}.obj`);
 
   const vertices: Vertex[] = [];
   const indices: number[] = [];
 
   const lines = raw.split("\n");
 
-  for (let line of lines) {
+  for (const line of lines) {
     let tokens = line.split(" ");
     tokens = removeEmptyStrings(tokens);
 
@@ -64,9 +64,7 @@ export async function loadMesh(name: string) {
             parseFloat(tokens[2]),
             parseFloat(tokens[3])
           ),
-          new Vector2(
-            0,0
-          ) // TODO
+          new Vector2(0, 0) // TODO
         )
       );
     } else if (tokens[0] === "f") {
@@ -78,7 +76,7 @@ export async function loadMesh(name: string) {
     }
   }
 
-  addMesh(name, vertices, indices)
+  addMesh(name, vertices, indices);
 }
 
 export function getVertexShader(name: string) {

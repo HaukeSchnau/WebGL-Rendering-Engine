@@ -58,13 +58,13 @@ export default class ForwardDirectional extends Shader {
   }
 
   setUniformBaseLight(uniformName: string, baseLight: BaseLight) {
-    this.setUniform(uniformName + ".color", baseLight.color);
-    this.setUniformf(uniformName + ".intensity", baseLight.intensity);
+    this.setUniform(`${uniformName}.color`, baseLight.color);
+    this.setUniformf(`${uniformName}.intensity`, baseLight.intensity);
   }
 
   setUniformDirLight(uniformName: string, directionalLight: DirectionalLight) {
-    this.setUniformBaseLight(uniformName + ".base", directionalLight);
-    this.setUniform(uniformName + ".direction", directionalLight.direction);
+    this.setUniformBaseLight(`${uniformName}.base`, directionalLight);
+    this.setUniform(`${uniformName}.direction`, directionalLight.direction);
   }
 
   static get instance() {

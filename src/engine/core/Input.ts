@@ -13,5 +13,7 @@ export function onKeyUp(e: KeyboardEvent) {
 }
 
 export default {
-  isKeyDown, onKeyDown, onKeyUp
-}
+  isKeyDown,
+  onKeyDown,
+  onKeyUp,
+};

@@ -63,24 +63,24 @@ export default class ForwardPoint extends Shader {
   }
 
   setUniformBaseLight(uniformName: string, baseLight: BaseLight) {
-    this.setUniform(uniformName + ".color", baseLight.color);
-    this.setUniformf(uniformName + ".intensity", baseLight.intensity);
+    this.setUniform(`${uniformName}.color`, baseLight.color);
+    this.setUniformf(`${uniformName}.intensity`, baseLight.intensity);
   }
 
   setUniformAttenuation(uniformName: string, atten: Attenuation) {
-    this.setUniformf(uniformName + ".constant", atten.constant);
-    this.setUniformf(uniformName + ".linear", atten.linear);
-    this.setUniformf(uniformName + ".exponent", atten.exponent);
+    this.setUniformf(`${uniformName}.constant`, atten.constant);
+    this.setUniformf(`${uniformName}.linear`, atten.linear);
+    this.setUniformf(`${uniformName}.exponent`, atten.exponent);
   }
 
   setUniformPointLight(uniformName: string, pointLight: PointLight) {
-    this.setUniformBaseLight(uniformName + ".base", pointLight);
-    this.setUniformAttenuation(uniformName + ".atten", pointLight.atten);
+    this.setUniformBaseLight(`${uniformName}.base`, pointLight);
+    this.setUniformAttenuation(`${uniformName}.atten`, pointLight.atten);
     this.setUniform(
-      uniformName + ".position",
+      `${uniformName}.position`,
       pointLight.transform.getTransformedTranslation()
     );
-    this.setUniformf(uniformName + ".range", pointLight.range);
+    this.setUniformf(`${uniformName}.range`, pointLight.range);
   }
 
   static get instance() {

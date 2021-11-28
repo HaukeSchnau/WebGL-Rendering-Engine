@@ -41,16 +41,17 @@ export default class Shader {
 
     if (!gl.getProgramParameter(this.program, gl.LINK_STATUS)) {
       console.error(
-        "Unable to initialize the shader program: " +
-          gl.getProgramInfoLog(this.program)
+        `Unable to initialize the shader program: ${gl.getProgramInfoLog(
+          this.program
+        )}`
       );
     }
 
-    for (let key of attribNames) {
+    for (const key of attribNames) {
       this.attribLocations[key] = gl.getAttribLocation(this.program, key);
     }
 
-    for (let key of uniformNames) {
+    for (const key of uniformNames) {
       this.uniformLocations[key] = gl.getUniformLocation(this.program, key)!;
     }
   }
@@ -109,8 +110,9 @@ export default class Shader {
 
     if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
       console.error(
-        "An error occurred compiling the shaders: " +
-          gl.getShaderInfoLog(shader)
+        `An error occurred compiling the shaders: ${gl.getShaderInfoLog(
+          shader
+        )}`
       );
       gl.deleteShader(shader);
     }

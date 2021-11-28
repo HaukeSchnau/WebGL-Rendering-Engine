@@ -1,5 +1,5 @@
 import Vector3 from "../math/Vector3";
-import BaseLight from "../components/BaseLight";
+import BaseLight from "./BaseLight";
 import ForwardDirectional from "../rendering/ForwardDirectional";
 
 export default class DirectionalLight extends BaseLight {

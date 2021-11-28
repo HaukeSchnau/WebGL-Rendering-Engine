@@ -37,7 +37,7 @@ export default class Quaternion {
   }
 
   get normalized() {
-    const length = this.length;
+    const { length } = this;
 
     return new Quaternion(
       this.x / length,

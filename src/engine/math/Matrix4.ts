@@ -17,7 +17,7 @@ export default class Matrix4 {
   }
 
   initIdentity() {
-    const m = this.m;
+    const {m} = this;
 
     m[0][0] = 1; m[0][1] = 0; m[0][2] = 0; m[0][3] = 0;
     m[1][0] = 0; m[1][1] = 1; m[1][2] = 0; m[1][3] = 0;
@@ -28,7 +28,7 @@ export default class Matrix4 {
   }
 
   initTranslation(translation: Vector3) {
-    const m = this.m;
+    const {m} = this;
     const { x, y, z } = translation;
 
     m[0][0] = 1; m[0][1] = 0; m[0][2] = 0; m[0][3] = x;
@@ -71,7 +71,7 @@ export default class Matrix4 {
   }
 
   initScale(scale: Vector3) {
-    const m = this.m;
+    const {m} = this;
     const { x, y, z } = scale;
 
     m[0][0] = x; m[0][1] = 0; m[0][2] = 0; m[0][3] = 0;
@@ -83,7 +83,7 @@ export default class Matrix4 {
   }
 
   initPerspective(fov: number, ar: number, zNear: number, zFar: number) {
-    const m = this.m;
+    const {m} = this;
 
     const tanHalfFov = Math.tan((fov / 2));
     const zRange = zNear - zFar;
@@ -101,7 +101,7 @@ export default class Matrix4 {
     const height = top - bottom;
     const depth = far -near;
 
-    const m = this.m;
+    const {m} = this;
 
     m[0][0] = 2/width; m[0][1] = 0;        m[0][2] = 0;        m[0][3] = -(right + left)/width;
     m[1][0] = 0;       m[1][1] = 2/height; m[1][2] = 0;        m[1][3] = -(top + bottom)/height;
@@ -112,7 +112,7 @@ export default class Matrix4 {
   }
 
   initRotationDirections(forward: Vector3, up: Vector3, right?: Vector3) {
-    const m = this.m;
+    const {m} = this;
 
     const f = forward.normalized;
     const r = right?.normalized ?? up.normalized.cross(f);
@@ -127,7 +127,7 @@ export default class Matrix4 {
   }
 
   transform(r: Vector3) {
-    const m = this.m;
+    const {m} = this;
 
     return new Vector3(
       m[0][0] * r.x + m[0][1] * r.y + m[0][2] * r.z + m[0][3],
@@ -138,7 +138,7 @@ export default class Matrix4 {
 
   mul(r: Matrix4) {
     const res = new Matrix4();
-    const m = this.m;
+    const {m} = this;
 
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 4; j++) {

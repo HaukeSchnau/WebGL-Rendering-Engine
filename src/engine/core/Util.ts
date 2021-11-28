@@ -11,7 +11,7 @@ export function sleep(ms: number) {
 export function removeEmptyStrings(data: string[]) {
   const result: string[] = [];
 
-  for (let line of data) {
+  for (const line of data) {
     if (line.length) result.push(line);
   }
 

@@ -48,7 +48,7 @@ export default class Vector2 {
   }
 
   get normalized() {
-    const length = this.length;
+    const { length } = this;
 
     return new Vector2(this.x / length, this.y / length);
   }
