@@ -53,7 +53,7 @@ export default class ForwardDirectional extends Shader {
 
     this.setUniform(
       "eyePos",
-      currentRenderingEngine.mainCamera.transform.translation
+      currentRenderingEngine.mainCamera.transform.getTransformedTranslation()
     );
   }
 

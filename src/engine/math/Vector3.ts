@@ -5,10 +5,14 @@ export default class Vector3 {
   y: number;
   z: number;
 
-  constructor(x: number, y: number, z: number) {
+  constructor(x = 0, y = 0, z = 0) {
     this.x = x;
     this.y = y;
     this.z = z;
+  }
+
+  copy() {
+    return new Vector3(this.x, this.y, this.z);
   }
 
   lerp(dest: Vector3, lerpFactor: number): Vector3 {
@@ -52,16 +56,7 @@ export default class Vector3 {
   }
 
   rotate(angle: number, axis: Vector3) {
-    const sinAngle = Math.sin(-angle);
-    const cosAngle = Math.cos(-angle);
-
-    return this.cross(axis.mul(sinAngle)).add(
-      //Rotation on local X
-      this.mul(cosAngle).add(
-        //Rotation on local Z
-        axis.mul(this.dot(axis.mul(1 - cosAngle)))
-      )
-    ); //Rotation on local Y
+    return this.rotateQuaternion(new Quaternion().initRotation(axis, angle));
   }
 
   rotateQuaternion(rotation: Quaternion) {
@@ -98,5 +93,9 @@ export default class Vector3 {
 
   get max() {
     return Math.max(this.x, this.y, this.z);
+  }
+
+  equals(r: Vector3) {
+    return this.x === r.x && this.y === r.y && this.z == r.z;
   }
 }

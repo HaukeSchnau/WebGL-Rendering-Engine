@@ -10,6 +10,7 @@ export default class GameObject {
   transform: Transform = new Transform();
 
   addChild(child: GameObject) {
+    child.transform.parent = this.transform;
     this.children.push(child);
     return this;
   }
@@ -27,6 +28,8 @@ export default class GameObject {
   }
 
   input(delta: number) {
+    this.transform.update();
+
     for (const component of this.components) component.input(delta);
 
     for (const child of this.children) child.input(delta);

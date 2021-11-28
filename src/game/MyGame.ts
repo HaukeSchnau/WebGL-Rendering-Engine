@@ -11,6 +11,7 @@ import DirectionalLight from "../engine/components/DirectionalLight";
 import PointLight from "../engine/components/PointLight";
 import Camera from "../engine/components/Camera";
 import { toRadians } from "../engine/math/MathUtils";
+import Quaternion from "../engine/math/Quaternion";
 
 export default class MyGame extends Game {
   constructor() {
@@ -47,11 +48,7 @@ export default class MyGame extends Game {
     this.root.addChild(monkey);
 
     const light = new GameObject();
-    const directionalLight = new DirectionalLight(
-      new Vector3(1, 1, 1),
-      0.4,
-      new Vector3(-1, 1, -1)
-    );
+    const directionalLight = new DirectionalLight(new Vector3(1, 1, 1), 0.4);
     light.addComponent(directionalLight);
     light.addComponent(
       new PointLight(new Vector3(0, 1, 0), 0.9, new Attenuation(0, 0, 1))
@@ -72,6 +69,11 @@ export default class MyGame extends Game {
         1000
       )
     );
+    player.addChild(monkey);
     this.root.addChild(player);
+    directionalLight.transform.rotation = new Quaternion().initRotation(
+      new Vector3(1, 0, 0),
+      toRadians(-45)
+    );
   }
 }

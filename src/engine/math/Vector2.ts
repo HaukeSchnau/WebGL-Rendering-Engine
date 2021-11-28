@@ -7,6 +7,10 @@ export default class Vector2 {
     this.y = y;
   }
 
+  copy() {
+    return new Vector2(this.x, this.y);
+  }
+
   lerp(dest: Vector2, lerpFactor: number): Vector2 {
     return dest.sub(this).mul(lerpFactor).add(this);
   }
@@ -55,5 +59,9 @@ export default class Vector2 {
 
   get max() {
     return Math.max(this.x, this.y);
+  }
+
+  equals(r: Vector2) {
+    return this.x === r.x && this.y === r.y;
   }
 }

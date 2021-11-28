@@ -17,6 +17,6 @@ export default class SpotLight extends PointLight {
   }
 
   get direction() {
-    return this.transform.rotation.forward;
+    return this.transform.getTransformedRotation().forward;
   }
 }

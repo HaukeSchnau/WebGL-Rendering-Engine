@@ -60,7 +60,7 @@ export default class ForwardSpot extends Shader {
 
     this.setUniform(
       "eyePos",
-      currentRenderingEngine.mainCamera.transform.translation
+      currentRenderingEngine.mainCamera.transform.getTransformedTranslation()
     );
   }
 
@@ -80,7 +80,7 @@ export default class ForwardSpot extends Shader {
     this.setUniformAttenuation(uniformName + ".atten", pointLight.atten);
     this.setUniform(
       uniformName + ".position",
-      pointLight.transform.translation
+      pointLight.transform.getTransformedTranslation()
     );
     this.setUniformf(uniformName + ".range", pointLight.range);
   }

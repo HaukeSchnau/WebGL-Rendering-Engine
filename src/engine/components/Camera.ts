@@ -1,7 +1,6 @@
 import { isKeyDown } from "../core/Input";
 import { toRadians } from "../math/MathUtils";
 import Matrix4 from "../math/Matrix4";
-import Quaternion from "../math/Quaternion";
 import Vector2 from "../math/Vector2";
 import Vector3 from "../math/Vector3";
 import RenderingEngine from "../rendering/RenderingEngine";
@@ -37,9 +36,12 @@ export default class Camera extends GameComponent {
   }
 
   getViewProjection() {
-    const cameraRotation = this.transform.rotation.toRotationMatrix();
+    const cameraRotation = this.transform
+      .getTransformedRotation()
+      .conjugate.toRotationMatrix();
+
     const cameraTranslation = new Matrix4().initTranslation(
-      this.transform.translation.mul(-1)
+      this.transform.getTransformedTranslation().mul(-1)
     );
 
     return this.projection.mul(cameraRotation.mul(cameraTranslation));
@@ -52,15 +54,11 @@ export default class Camera extends GameComponent {
   }
 
   rotateY(angle: number) {
-    this.transform.rotation = this.transform.rotation.mul(
-      new Quaternion().initRotation(Camera.yAxis, angle)
-    );
+    this.transform.rotate(Camera.yAxis, angle);
   }
 
   rotateX(angle: number) {
-    this.transform.rotation = this.transform.rotation.mul(
-      new Quaternion().initRotation(this.transform.rotation.right, angle)
-    );
+    this.transform.rotate(this.transform.rotation.right, angle);
   }
 
   yVelocity = 0;
@@ -84,10 +82,10 @@ export default class Camera extends GameComponent {
     if (isKeyDown("Space") && this.transform.translation.y <= 0) {
       this.yVelocity = 10;
     }
-    if (isKeyDown("ArrowDown")) this.rotateX(toRadians(-2));
-    if (isKeyDown("ArrowUp")) this.rotateX(toRadians(2));
-    if (isKeyDown("ArrowLeft")) this.rotateY(toRadians(2));
-    if (isKeyDown("ArrowRight")) this.rotateY(toRadians(-2));
+    if (isKeyDown("ArrowDown")) this.rotateX(toRadians(2));
+    if (isKeyDown("ArrowUp")) this.rotateX(toRadians(-2));
+    if (isKeyDown("ArrowLeft")) this.rotateY(toRadians(-2));
+    if (isKeyDown("ArrowRight")) this.rotateY(toRadians(2));
 
     this.yVelocity -= 0.2;
     if (this.transform.translation.y < 0) {
@@ -99,8 +97,8 @@ export default class Camera extends GameComponent {
   }
 
   override mouseMove(movement: Vector2) {
-    this.rotateY(-movement.x * 0.002);
-    this.rotateX(-movement.y * 0.002);
+    this.rotateY(movement.x * 0.002);
+    this.rotateX(movement.y * 0.002);
   }
 
   override addToRenderingEngine(renderingEngine: RenderingEngine) {
