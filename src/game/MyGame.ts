@@ -9,6 +9,8 @@ import SpotLight from "../engine/components/SpotLight";
 import { Texture } from "../engine/rendering/Texture";
 import DirectionalLight from "../engine/components/DirectionalLight";
 import PointLight from "../engine/components/PointLight";
+import Camera from "../engine/components/Camera";
+import { toRadians } from "../engine/math/MathUtils";
 
 export default class MyGame extends Game {
   constructor() {
@@ -24,11 +26,31 @@ export default class MyGame extends Game {
     sphere.transform.translation.z = 5;
     sphere.addComponent(new MeshRenderer(new Mesh("sphere", true), material));
 
+    this.root.addChild(
+      new GameObject().addComponent(
+        new MeshRenderer(new Mesh("plane", true), material)
+      )
+    );
+
+    const pyramid = new GameObject().addComponent(
+      new MeshRenderer(new Mesh("pyramid", true), material)
+    );
+    pyramid.transform.translation.x = 3;
+    pyramid.transform.translation.z = 7;
+    this.root.addChild(pyramid);
+
+    const monkey = new GameObject().addComponent(
+      new MeshRenderer(new Mesh("monkey", true), material)
+    );
+    monkey.transform.translation.x = -3;
+    monkey.transform.translation.z = 7;
+    this.root.addChild(monkey);
+
     const light = new GameObject();
     const directionalLight = new DirectionalLight(
       new Vector3(1, 1, 1),
       0.4,
-      new Vector3(1, 1, 1)
+      new Vector3(-1, 1, -1)
     );
     light.addComponent(directionalLight);
     light.addComponent(
@@ -40,5 +62,16 @@ export default class MyGame extends Game {
 
     this.root.addChild(light);
     this.root.addChild(sphere);
+
+    const player = new GameObject();
+    player.addComponent(
+      new Camera(
+        toRadians(70),
+        canvas.clientWidth / canvas.clientHeight,
+        0.1,
+        1000
+      )
+    );
+    this.root.addChild(player);
   }
 }

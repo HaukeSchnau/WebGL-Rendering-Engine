@@ -1,4 +1,4 @@
-import Camera from "../core/Camera";
+import Camera from "../components/Camera";
 import GameObject from "../core/GameObject";
 import { toRadians } from "../math/MathUtils";
 import Vector3 from "../math/Vector3";
@@ -77,5 +77,9 @@ export default class RenderingEngine {
   resize(width: number, height: number) {
     this.gl.viewport(0, 0, width, height);
     this.mainCamera.aspect = width / height;
+  }
+
+  addCamera(camera: Camera) {
+    this.mainCamera = camera;
   }
 }

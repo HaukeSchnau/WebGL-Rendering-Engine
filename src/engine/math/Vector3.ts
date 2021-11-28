@@ -1,4 +1,3 @@
-import mathUtils from "./MathUtils";
 import Quaternion from "./Quaternion";
 
 export default class Vector3 {
@@ -53,12 +52,16 @@ export default class Vector3 {
   }
 
   rotate(angle: number, axis: Vector3) {
-    const rotation = new Quaternion().initRotation(axis, angle);
-    const conjugate = rotation.conjugate;
+    const sinAngle = Math.sin(-angle);
+    const cosAngle = Math.cos(-angle);
 
-    const w = rotation.mulVec(this).mul(conjugate);
-
-    return new Vector3(w.x, w.y, w.z);
+    return this.cross(axis.mul(sinAngle)).add(
+      //Rotation on local X
+      this.mul(cosAngle).add(
+        //Rotation on local Z
+        axis.mul(this.dot(axis.mul(1 - cosAngle)))
+      )
+    ); //Rotation on local Y
   }
 
   rotateQuaternion(rotation: Quaternion) {

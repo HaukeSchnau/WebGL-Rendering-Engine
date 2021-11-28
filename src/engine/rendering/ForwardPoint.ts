@@ -56,7 +56,10 @@ export default class ForwardPoint extends Shader {
     this.setUniformf("specularIntensity", material.specularIntensity);
     this.setUniformf("specularPower", material.specularPower);
 
-    this.setUniform("eyePos", currentRenderingEngine.mainCamera.pos);
+    this.setUniform(
+      "eyePos",
+      currentRenderingEngine.mainCamera.transform.translation
+    );
   }
 
   setUniformBaseLight(uniformName: string, baseLight: BaseLight) {
@@ -73,7 +76,10 @@ export default class ForwardPoint extends Shader {
   setUniformPointLight(uniformName: string, pointLight: PointLight) {
     this.setUniformBaseLight(uniformName + ".base", pointLight);
     this.setUniformAttenuation(uniformName + ".atten", pointLight.atten);
-    this.setUniform(uniformName + ".position", pointLight.transform.translation);
+    this.setUniform(
+      uniformName + ".position",
+      pointLight.transform.translation
+    );
     this.setUniformf(uniformName + ".range", pointLight.range);
   }
 

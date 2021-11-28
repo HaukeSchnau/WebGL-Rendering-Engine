@@ -11,21 +11,29 @@ export default class GameObject {
 
   addChild(child: GameObject) {
     this.children.push(child);
+    return this;
   }
 
   addComponent(component: GameComponent) {
     component.parent = this;
     this.components.push(component);
+    return this;
   }
 
-  input(mouseMovement: Vector2) {
-    for (const component of this.components) component.input(mouseMovement);
+  mouseMove(mouseMovement: Vector2) {
+    for (const component of this.components) component.mouseMove(mouseMovement);
 
-    for (const child of this.children) child.input(mouseMovement);
+    for (const child of this.children) child.mouseMove(mouseMovement);
+  }
+
+  input(delta: number) {
+    for (const component of this.components) component.input(delta);
+
+    for (const child of this.children) child.input(delta);
   }
 
   update(delta: number) {
-    for (const component of this.components) component.update();
+    for (const component of this.components) component.update(delta);
 
     for (const child of this.children) child.update(delta);
   }

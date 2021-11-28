@@ -114,8 +114,8 @@ export default class Matrix4 {
     const m = this.m;
 
     const f = forward.normalized;
-    const r = right ?? up.normalized.cross(f);
-    const u = f.cross(r);
+    const r = right?.normalized ?? up.normalized.cross(f);
+    const u = up?.normalized ?? f.cross(r);
 
     m[0][0] = r.x; m[0][1] = r.y; m[0][2] = r.z; m[0][3] = 0;
     m[1][0] = u.x; m[1][1] = u.y; m[1][2] = u.z; m[1][3] = 0;

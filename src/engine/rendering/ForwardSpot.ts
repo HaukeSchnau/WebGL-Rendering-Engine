@@ -58,7 +58,10 @@ export default class ForwardSpot extends Shader {
     this.setUniformf("specularIntensity", material.specularIntensity);
     this.setUniformf("specularPower", material.specularPower);
 
-    this.setUniform("eyePos", currentRenderingEngine.mainCamera.pos);
+    this.setUniform(
+      "eyePos",
+      currentRenderingEngine.mainCamera.transform.translation
+    );
   }
 
   setUniformBaseLight(uniformName: string, baseLight: BaseLight) {

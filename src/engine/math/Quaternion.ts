@@ -66,45 +66,58 @@ export default class Quaternion {
   }
 
   toRotationMatrix() {
-    const forward = new Vector3(
+    return new Matrix4().initRotationDirections(
+      this.forward,
+      this.up,
+      this.right
+    );
+  }
+
+  get forward() {
+    return new Vector3(
       2 * (this.x * this.z - this.w * this.y),
       2 * (this.y * this.z + this.w * this.x),
       1 - 2 * (this.x * this.x + this.y * this.y)
     );
-    const up = new Vector3(
+  }
+
+  get back() {
+    return new Vector3(
+      -2 * (this.x * this.z - this.w * this.y),
+      -2 * (this.y * this.z + this.w * this.x),
+      -(1 - 2 * (this.x * this.x + this.y * this.y))
+    );
+  }
+
+  get up() {
+    return new Vector3(
       2 * (this.x * this.y + this.w * this.z),
       1 - 2 * (this.x * this.x + this.z * this.z),
       2 * (this.y * this.z - this.w * this.x)
     );
-    const right = new Vector3(
+  }
+
+  get down() {
+    return new Vector3(
+      -2 * (this.x * this.y + this.w * this.z),
+      -(1 - 2 * (this.x * this.x + this.z * this.z)),
+      -2 * (this.y * this.z - this.w * this.x)
+    );
+  }
+
+  get right() {
+    return new Vector3(
       1 - 2 * (this.y * this.y + this.z * this.z),
       2 * (this.x * this.y - this.w * this.z),
       2 * (this.x * this.z + this.w * this.y)
     );
-    return new Matrix4().initRotationDirections(forward, up, right);
-  }
-
-  get forward() {
-    return new Vector3(0, 0, 1).rotateQuaternion(this);
-  }
-
-  get back() {
-    return new Vector3(0, 0, -1).rotateQuaternion(this);
-  }
-
-  get up() {
-    return new Vector3(0, 1, 0).rotateQuaternion(this);
-  }
-
-  get down() {
-    return new Vector3(0, -1, 0).rotateQuaternion(this);
-  }
-
-  get right() {
-    return new Vector3(1, 0, 0).rotateQuaternion(this);
   }
 
   get left() {
-    return new Vector3(-1, 0, 0).rotateQuaternion(this);
+    return new Vector3(
+      -(1 - 2 * (this.y * this.y + this.z * this.z)),
+      -2 * (this.x * this.y - this.w * this.z),
+      -2 * (this.x * this.z + this.w * this.y)
+    );
   }
 }

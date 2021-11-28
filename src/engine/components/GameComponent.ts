@@ -7,8 +7,9 @@ import Shader from "../rendering/Shader";
 export default abstract class GameComponent {
   parent?: GameObject;
 
-  input(_mouseMovement: Vector2): void {}
-  update(): void {}
+  mouseMove(_mouseMovement: Vector2): void {}
+  input(_delta: number): void {}
+  update(_delta: number): void {}
   render(_shader: Shader): void {}
 
   addToRenderingEngine(_renderingEngine: RenderingEngine): void {}

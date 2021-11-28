@@ -95,10 +95,11 @@ export default abstract class Game {
   }
 
   update(delta: number) {
+    this.root.input(delta);
     this.root.update(delta);
   };
   onMouseMove(movement: Vector2) {
-    this.root.input(movement);
+    this.root.mouseMove(movement);
   };
 
   private mousemove = (e: MouseEvent) => {
